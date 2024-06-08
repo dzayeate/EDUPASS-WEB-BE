@@ -6,15 +6,15 @@ config();
 const database = new Sequelize({
   dialect: "mysql",
   host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-})
+});
 
 database.sync().then(() => {
   console.log("Database connected");
 }).catch((err) => {
-  console.log("Error: " + err);
+  console.error("Error connecting to the database: ", err);
 });
 
 module.exports = database;

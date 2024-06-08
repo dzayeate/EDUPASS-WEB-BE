@@ -16,7 +16,7 @@ const swaggerOption = {
     info: {
       title: 'API GDSC UNIVERSITAS PASUNDAN',
       version: '1.0.0',
-      description: 'DEVELOPMENT BY GDSC UNPAS',
+      description: 'Description of API GDSC UNPAS',
     },
     server: [
       {

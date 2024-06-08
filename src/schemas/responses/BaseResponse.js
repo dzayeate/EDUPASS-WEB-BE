@@ -10,4 +10,4 @@ class BaseResponse {
   }
 }
 
-modyule.exports = BaseResponse;
+module.exports = BaseResponse;
