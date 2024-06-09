@@ -1,5 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const BaseResponse = require('../schemas/responses/BaseResponse');
+const { User, Role } = require('../models');
 const Register = require('../services/auth/register');
 const Login = require('../services/auth/login');
 const BaseError = require('../schemas/responses/BaseError');
@@ -49,7 +50,41 @@ const LoginUser = async (req, res) => {
   }
 }
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['name']
+        }
+      ],
+      attributes: ['id', 'email']
+    });
+
+    res.status(StatusCodes.OK).json(
+      new BaseResponse({
+        status: StatusCodes.OK,
+        message: 'Berhasil mendapatkan data user',
+        data: users
+      })
+    );
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res
+      .status(status)
+      .json(
+        new BaseResponse({
+          status: status,
+          message: error.message
+        })
+      )
+  }
+}
+
 module.exports = {
   RegisterUser,
-  LoginUser
+  LoginUser,
+  getAllUsers
 }

@@ -15,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         as: 'users',
       });
     }
+
+    static getIdByName(name) {
+      return this.findOne({
+        where: { name },
+        attributes: ['id'],
+      });
+    }
+
   }
   Role.init({
     id: {

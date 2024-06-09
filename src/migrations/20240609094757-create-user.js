@@ -18,6 +18,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      roleId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Roles',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -27,8 +35,23 @@ module.exports = {
         type: Sequelize.DATE
       },
     });
+
+   // Add a foreign key constraint to the roleId column
+    await queryInterface.addConstraint('Users', {
+      fields: ['roleId'],
+      type: 'foreign key',
+      name: 'FK_Users_Roles',
+      references: { // Required field
+        table: 'Roles',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
+    });
+
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.removeConstraint('Users', 'FK_Users_Roles');
     await queryInterface.dropTable('Users');
   }
 };
