@@ -1,4 +1,4 @@
-const Users = require("../../schemas/models/users");
+const { User } = require("../../models");
 const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
@@ -24,10 +24,10 @@ const Register = async(body) => {
 
   const hashedPassword = await encryptPassword(password);
 
-  const user = await Users.create({
+  const user = await User.create({
     email,
     password: hashedPassword,
-  });
+  })
 
   return user;
 }
