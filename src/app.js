@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -5,8 +7,6 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const router = require('./routes/index');
-
-require('dotenv').config();
 
 const app = express();
 
@@ -16,7 +16,7 @@ const swaggerOption = {
     info: {
       title: 'API GDSC UNIVERSITAS PASUNDAN',
       version: '1.0.0',
-      description: 'DEVELOPMENT BY GDSC UNPAS',
+      description: 'Description of API GDSC UNPAS',
     },
     server: [
       {

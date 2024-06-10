@@ -1,13 +1,9 @@
 class BaseResponse {
-  status;
-  message;
-  data;
-
   constructor(param) {
-      this.status = param?.status;
-      this.message = param?.message;
-      this.data = param?.data;
+    this.status = param?.status;
+    this.message = param?.message;
+    this.data = param?.data;
   }
 }
 
-modyule.exports = BaseResponse;
+module.exports = BaseResponse;
