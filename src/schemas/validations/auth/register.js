@@ -5,5 +5,6 @@ module.exports = Joi.object({
   password: Joi.string().required(),
   confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': 'Passwords do not match'
-  })
+  }),
+  roleName: Joi.string().required()
 })

@@ -1,21 +1,21 @@
-const { User, Role } = require("../../models");
+const { User, Role, sequelize } = require("../../models");
 const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
 const BaseError = require("../../schemas/responses/BaseError");
 
-const Register = async(body) => {
+const Register = async (body) => {
   const validateBody = schema.validate(body);
-  if(validateBody.error) {
+  if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
-      message: validateBody.error.details.map(err => err.message).join(', '),
+      message: validateBody.error.details.map((err) => err.message).join(", "),
     });
   }
 
-  const { email, password, confirmPassword } = validateBody.value;
+  const { email, password, confirmPassword, roleName } = validateBody.value;
 
-  if(password !== confirmPassword) {
+  if (password !== confirmPassword) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
       message: "Passwords do not match",
@@ -23,15 +23,38 @@ const Register = async(body) => {
   }
 
   const hashedPassword = await encryptPassword(password);
-  const defaultRole = await Role.getIdByName('Siswa');
 
-  const user = await User.create({
-    email,
-    password: hashedPassword,
-    roleId: defaultRole.id,
-  })
+  const transaction = await sequelize.transaction();
 
-  return user;
-}
+  try {
+    const role = await Role.getIdByName(roleName);
+    
+    console.log(`role: ${JSON.stringify(role)}`);
+
+    if (!role) {
+      throw new BaseError({
+        status: StatusCodes.BAD_REQUEST,
+        message: "Invalid role name",
+      });
+    }
+    const roleId = role.id;
+
+    const user = await User.create(
+      {
+        email,
+        password: hashedPassword,
+        roleId,
+      },
+      { transaction }
+    );
+
+    await transaction.commit();
+
+    return user;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
 
 module.exports = Register;

@@ -36,12 +36,11 @@ module.exports = {
       },
     });
 
-   // Add a foreign key constraint to the roleId column
     await queryInterface.addConstraint('Users', {
       fields: ['roleId'],
       type: 'foreign key',
       name: 'FK_Users_Roles',
-      references: { // Required field
+      references: {
         table: 'Roles',
         field: 'id'
       },

@@ -25,6 +25,10 @@
  *                              description: confrim password user 
  *                              type: string
  *                              example: test123
+ *                          roleName:
+ *                              description: name of the role to be assigned to the user
+ *                              type: string 
+ *                              example: "Siswa"
  *     responses:
  *       200:
  *         description: User baru berhasil dibuat
