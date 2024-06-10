@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const BaseResponse = require('../schemas/responses/BaseResponse');
-const { User, Role } = require('../models');
+const { User, Role, Biodate } = require('../models');
 const Register = require('../services/auth/register');
 const Login = require('../services/auth/login');
 const BaseError = require('../schemas/responses/BaseError');
@@ -58,6 +58,11 @@ const getAllUsers = async (req, res) => {
           model: Role,
           as: 'role',
           attributes: ['name']
+        },
+        {
+          model: Biodate,
+          as: 'biodate',
+          attributes: ['firstName', 'lastName', 'nik', 'institutionName', 'institutionLevel', 'province', 'regencies', 'studyField', 'reason', 'image']
         }
       ],
       attributes: ['id', 'email']
@@ -83,8 +88,46 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: [
+        {
+          model: Role,
+          as: 'role',
+          attributes: ['name']
+        },
+        {
+          model: Biodate,
+          as: 'biodate',
+          attributes: ['firstName', 'lastName', 'nik', 'institutionName', 'institutionLevel', 'province', 'regencies', 'studyField', 'reason', 'image']
+        }
+      ],
+      attributes: ['id', 'email']
+    });
+    res.status(StatusCodes.OK).json(
+      new BaseResponse({
+        status: StatusCodes.OK,
+        message: 'Berhasil mendapatkan data user',
+        data: user
+      })
+    );
+} catch (err) {
+  const status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
+  res
+   .status(status)
+   .json(
+      new BaseResponse({
+        status: status,
+        message: err.message
+      })
+    )
+}
+}
+
 module.exports = {
   RegisterUser,
   LoginUser,
-  getAllUsers
+  getAllUsers,
+  getUserById
 }

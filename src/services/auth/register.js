@@ -1,4 +1,4 @@
-const { User, Role, sequelize } = require("../../models");
+const { User, Role, sequelize, Biodate } = require("../../models");
 const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
@@ -13,7 +13,21 @@ const Register = async (body) => {
     });
   }
 
-  const { email, password, confirmPassword, roleName } = validateBody.value;
+  const {
+    email,
+    password,
+    confirmPassword,
+    roleName,
+    firstName,
+    lastName,
+    nik,
+    institutionName,
+    institutionLevel,
+    province,
+    regencies,
+    studyField,
+    reason,
+    image } = validateBody.value;
 
   if (password !== confirmPassword) {
     throw new BaseError({
@@ -28,8 +42,6 @@ const Register = async (body) => {
 
   try {
     const role = await Role.getIdByName(roleName);
-    
-    console.log(`role: ${JSON.stringify(role)}`);
 
     if (!role) {
       throw new BaseError({
@@ -37,17 +49,48 @@ const Register = async (body) => {
         message: "Invalid role name",
       });
     }
+    //cek apakah nik sudah ada 
+    const isNikExists = await User.findOne({
+      include: [{
+        model: Biodate,
+        as: "biodate"
+      }],
+      where: { "$biodate.nik$": nik }, // Use "$biodate.nik$" to access the nik column in the Biodate table
+      transaction,
+    });
+    
+    if (isNikExists) {
+      throw new BaseError({
+        status: StatusCodes.BAD_REQUEST,
+        message: "Nik sudah terdaftar",
+      });
+    }
     const roleId = role.id;
-
+    const biodate = await Biodate.create(
+      {
+        firstName,
+        lastName,
+        nik,
+        institutionName,
+        institutionLevel,
+        province,
+        regencies,
+        studyField,
+        reason,
+        image,
+      },
+      { transaction}
+    );
     const user = await User.create(
       {
         email,
         password: hashedPassword,
         roleId,
+        biodateId: biodate.id,
       },
       { transaction }
     );
-
+   
     await transaction.commit();
 
     return user;

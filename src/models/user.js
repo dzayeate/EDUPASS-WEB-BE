@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'roleId',
         as: 'role',
       });
+      User.belongsTo(models.Biodate, {
+        foreignKey: 'biodateId',
+        as: 'biodate',
+      });
     }
   }
   User.init({

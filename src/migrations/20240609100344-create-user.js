@@ -26,6 +26,14 @@ module.exports = {
           key: 'id'
         }
       },
+      biodateId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'Biodates',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -36,6 +44,7 @@ module.exports = {
       },
     });
 
+    // Add a foreign key constraint to the roleId column
     await queryInterface.addConstraint('Users', {
       fields: ['roleId'],
       type: 'foreign key',
@@ -48,8 +57,22 @@ module.exports = {
       onUpdate: 'cascade'
     });
 
+    // Add a foreign key constraint to the biodateId column
+    await queryInterface.addConstraint('Users', {
+      fields: ['biodateId'],
+      type: 'foreign key',
+      name: 'FK_Users_Biodates',
+      references: {
+        table: 'Biodates',
+        field: 'id'
+      },
+      onDelete: 'cascade',
+      onUpdate: 'cascade'
+    });
+
   },
   async down(queryInterface, Sequelize) {
+    await queryInterface.removeConstraint('Users', 'FK_Users_Biodates');
     await queryInterface.removeConstraint('Users', 'FK_Users_Roles');
     await queryInterface.dropTable('Users');
   }
