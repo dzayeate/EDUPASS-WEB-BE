@@ -1,9 +1,10 @@
 const { StatusCodes } = require('http-status-codes');
 const BaseResponse = require('../schemas/responses/BaseResponse');
-const { User, Role, Biodate } = require('../models');
+const DataTable = require('../schemas/responses/DataTable');
 const Register = require('../services/auth/register');
 const Login = require('../services/auth/login');
-const BaseError = require('../schemas/responses/BaseError');
+const FindUsers = require('../services/user/findUser');
+const { sponsor, mahasiswa } = require('../services/user/test');
 
 const RegisterUser = async (req, res) => {
   try {
@@ -50,31 +51,10 @@ const LoginUser = async (req, res) => {
   }
 }
 
-const getAllUsers = async (req, res) => {
+const GetAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll({
-      include: [
-        {
-          model: Role,
-          as: 'role',
-          attributes: ['name']
-        },
-        {
-          model: Biodate,
-          as: 'biodate',
-          attributes: ['firstName', 'lastName', 'nik', 'institutionName', 'institutionLevel', 'province', 'regencies', 'studyField', 'reason', 'image']
-        }
-      ],
-      attributes: ['id', 'email']
-    });
-
-    res.status(StatusCodes.OK).json(
-      new BaseResponse({
-        status: StatusCodes.OK,
-        message: 'Berhasil mendapatkan data user',
-        data: users
-      })
-    );
+    const users = await FindUsers(req.query);
+    res.status(StatusCodes.OK).json(new DataTable(users.data, users.total));
   } catch (error) {
     const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
     res
@@ -88,46 +68,48 @@ const getAllUsers = async (req, res) => {
   }
 }
 
-const getUserById = async (req, res) => {
+const TestSponsor = async (req, res) => {
   try {
-    const user = await User.findByPk(req.params.id, {
-      include: [
-        {
-          model: Role,
-          as: 'role',
-          attributes: ['name']
-        },
-        {
-          model: Biodate,
-          as: 'biodate',
-          attributes: ['firstName', 'lastName', 'nik', 'institutionName', 'institutionLevel', 'province', 'regencies', 'studyField', 'reason', 'image']
-        }
-      ],
-      attributes: ['id', 'email']
-    });
-    res.status(StatusCodes.OK).json(
-      new BaseResponse({
-        status: StatusCodes.OK,
-        message: 'Berhasil mendapatkan data user',
-        data: user
-      })
-    );
-} catch (err) {
-  const status = err.status || StatusCodes.INTERNAL_SERVER_ERROR;
-  res
-   .status(status)
-   .json(
+    const data = await sponsor(req.body);
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Berhasil',
+      data: data
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(
       new BaseResponse({
         status: status,
-        message: err.message
+        message: error.message
       })
-    )
+    );
+  }
 }
+
+const TestMahasiswa = async (req, res) => {
+  try {
+    const data = await mahasiswa(req.body);
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Berhasil',
+      data: data
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(
+      new BaseResponse({
+        status: status,
+        message: error.message
+      })
+    );
+  }
 }
 
 module.exports = {
   RegisterUser,
   LoginUser,
-  getAllUsers,
-  getUserById
+  GetAllUsers,
+  TestSponsor,
+  TestMahasiswa
 }

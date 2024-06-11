@@ -4,7 +4,7 @@
  *   - name: Auth
  *     description: Authentication API
  * 
- *   - name: User
+ *   - name: Users
  *     description: User API
  *
  */

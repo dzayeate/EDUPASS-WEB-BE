@@ -55,7 +55,7 @@ const Register = async (body) => {
         model: Biodate,
         as: "biodate"
       }],
-      where: { "$biodate.nik$": nik }, // Use "$biodate.nik$" to access the nik column in the Biodate table
+      where: { "$biodate.nik$": nik },
       transaction,
     });
     

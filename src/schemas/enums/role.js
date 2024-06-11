@@ -1,6 +1,6 @@
 const ROLE = {
-  siswa: 'Siswa',
-  mahasiswa: 'Mahasiswa',
+  Siswa: 'Siswa',
+  Mahasiswa: 'Mahasiswa',
   EO: 'Eo',
   Sponsor: 'Sponsor',
   Perusahaan: 'Perusahaan',
