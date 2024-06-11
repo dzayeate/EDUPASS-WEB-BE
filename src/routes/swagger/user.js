@@ -72,3 +72,47 @@
  *         description: Internal Server Error
  */
 
+/**
+ * @swagger
+ *
+ * /user/change-password:
+ *   post:
+ *      security:
+ *       - bearerAuth: []
+ *      summary: change password for user
+ *      tags: [Users]
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          oldPassword:
+ *                              description: old user password
+ *                              type: string
+ *                              example: test123
+ *                          newPassword:
+ *                              description: new user password
+ *                              type: string
+ *                              example: 321test
+ *                          confirmPassword:
+ *                              description: confirm new password
+ *                              type: string
+ *                              example: 321test
+ *      responses:
+ *          200:
+ *              description: login token
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          allOf:
+ *                              - $ref: '#/components/schemas/BaseResponse'
+ *
+ *          500:
+ *              description: Some server error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/BaseError'
+ * 
+ */
