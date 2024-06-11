@@ -5,11 +5,14 @@ const Login = require('../services/auth/login');
 
 const RegisterUser = async (req, res) => {
   try {
+    const {body, file} = req;
+    const result = await Register(body, file);
+
     res.status(StatusCodes.CREATED).json(
       new BaseResponse({
         status: StatusCodes.CREATED,
         message: 'Berhasil membuat user baru',
-        data: await Register(req.body)
+        data: result
       })
     )
   } catch (error) {

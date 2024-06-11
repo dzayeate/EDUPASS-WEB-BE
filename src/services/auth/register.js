@@ -4,8 +4,9 @@ const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
 const BaseError = require("../../schemas/responses/BaseError");
 
-const Register = async (body) => {
+const Register = async (body, file) => {
   const validateBody = schema.validate(body);
+  console.log("File:", file);
   if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
@@ -27,13 +28,19 @@ const Register = async (body) => {
     regencies,
     studyField,
     reason,
-    image } = validateBody.value;
+  } = validateBody.value;
 
   if (password !== confirmPassword) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
       message: "Passwords do not match",
     });
+  }
+
+  let biodateImage = null;
+
+  if (file) {
+    biodateImage = file.filename;
   }
 
   const hashedPassword = await encryptPassword(password);
@@ -77,9 +84,9 @@ const Register = async (body) => {
         regencies,
         studyField,
         reason,
-        image,
+        image: biodateImage,
       },
-      { transaction}
+      { transaction }
     );
     const user = await User.create(
       {

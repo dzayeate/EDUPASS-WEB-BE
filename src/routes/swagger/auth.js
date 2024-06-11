@@ -9,7 +9,7 @@
  *     tags: [Auth]
  *     requestBody:
  *          content:
- *              application/json:
+ *              multipart/form-data:
  *                  schema:
  *                      type: object
  *                      properties:
@@ -22,7 +22,7 @@
  *                              type: string
  *                              example: test123
  *                          confirmPassword:
- *                              description: confrim password user 
+ *                              description: confirm password user 
  *                              type: string
  *                              example: test123
  *                          roleName:
@@ -38,7 +38,7 @@
  *                              type: string 
  *                              example: "Doe"
  *                          nik:
- *                              description: your id unique number
+ *                              description: your unique ID number
  *                              type: string 
  *                              example: "3220223332221145"
  *                          institutionName:
@@ -64,14 +64,17 @@
  *                          reason:
  *                              description: reason why you registered in this application
  *                              type: string 
- *                              example: " Saya ingin belajar lebih banyak tentang pemrograman"
+ *                              example: "Saya ingin belajar lebih banyak tentang pemrograman"
+ *                          image:
+ *                              description: file to upload
+ *                              type: file
  *     responses:
  *       200:
  *         description: User baru berhasil dibuat
  *
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /auth/login:
  *   post:
  *      summary: login for user
