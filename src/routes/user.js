@@ -3,7 +3,8 @@ const {
   GetAllUsers,
   TestSponsor,
   TestMahasiswa,
-  ChangePasswordUser
+  ChangePasswordUser,
+  ForgotPassword
 } = require('../controllers/user');
 const ValidateAccess = require('../middlewares/access');
 const AuthorizationCheck = require('../middlewares/auth');
@@ -14,5 +15,7 @@ router.get('/getUser', [], GetAllUsers);
 router.get('/sponsor', [ AuthorizationCheck, ValidateAccess ], TestSponsor);
 router.get('/mahasiswa', [ AuthorizationCheck, ValidateAccess ], TestMahasiswa);
 router.post('/change-password', [ AuthorizationCheck ], ChangePasswordUser);
+
+router.post('/forgot-password', [], ForgotPassword);
 
 module.exports = router;

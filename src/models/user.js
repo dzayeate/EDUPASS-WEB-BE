@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'biodateId',
         as: 'biodate',
       });
+      User.hasMany(models.forgotPassword, {
+        foreignKey: 'userId',
+        as: 'forgotPassword',
+      });
     }
   }
   User.init({
@@ -40,6 +44,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       references: {
         model: 'Role',
+        key: 'id'
+      }
+    },
+    biodateId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Biodate',
         key: 'id'
       }
     }
