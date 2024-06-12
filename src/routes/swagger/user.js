@@ -116,3 +116,78 @@
  *                          $ref: '#/components/schemas/BaseError'
  * 
  */
+
+/**
+ * @swagger
+ *
+ * /user/sponsor:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ *
+ * /user/mahasiswa:
+ *   get:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ */
+
+/**
+ * @swagger
+ *
+ * /user/forgot-password:
+ *  post:
+ *      summary: change password for user
+ *      tags: [Users]
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              description: email user
+ *                              type: string
+ *                              example: test@gmail.com
+ *      responses:
+ *          200:
+ *              description: login token
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          allOf:
+ *                              - $ref: '#/components/schemas/BaseResponse'
+ *
+ *          500:
+ *              description: Some server error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/BaseError'
+ * 
+ */
