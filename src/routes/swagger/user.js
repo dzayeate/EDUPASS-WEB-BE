@@ -190,4 +190,31 @@
  *                      schema:
  *                          $ref: '#/components/schemas/BaseError'
  * 
+ * 
+ * /user/reset-password/{token}:
+ *  get:
+ *      summary: get user data by token
+ *      tags: [Users]
+ *      parameters:
+ *         - in: path
+ *           name: token
+ *           required: true
+ *           description: token from email
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: User data and token to manipulate for change password
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          allOf:
+ *                              $ref: '#/components/schemas/BaseResponse'
+ *
+ *          500:
+ *              description: Some server error
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/BaseError'
+ * 
  */

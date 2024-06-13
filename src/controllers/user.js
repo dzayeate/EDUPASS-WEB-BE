@@ -4,6 +4,7 @@ const DataTable = require('../schemas/responses/DataTable');
 const FindUsers = require('../services/user/findUser');
 const ChangePassword = require('../services/user/change-password');
 const forgotPass = require('../services/user/forgot-password');
+const resetPassword = require('../services/user/reset-password');
 const { sponsor, mahasiswa } = require('../services/user/test');
 
 const GetAllUsers = async (req, res) => {
@@ -93,10 +94,36 @@ const ForgotPassword = async (req, res) => {
   }
 }
 
+const ResetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    console.log('Token:', token); // Log the token value
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+    const result = await resetPassword(token);
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Token Validation Success',
+      data: result
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(new BaseResponse({
+      status: status,
+      message: error.message
+    }));
+  }
+}
+
+
+
+
 module.exports = {
   GetAllUsers,
   TestSponsor,
   TestMahasiswa,
   ChangePasswordUser,
   ForgotPassword,
+  ResetPassword,
 }

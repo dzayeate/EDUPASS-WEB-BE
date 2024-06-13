@@ -36,7 +36,7 @@ const forgotPass = async (body) => {
             subject: 'Reset Password',
             html: `
             <h1>Reset Password</h1>
-            <p>Klik link berikut untuk reset password</p>
+            <p>Klik link berikut untuk reset password, link ini hanya berlaku untuk 10 menit sebelum kadaluarsa</p>
             <a href="http://localhost:3000/user/reset-password/${token}">Reset Password</a>
             `
         });
