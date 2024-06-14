@@ -68,10 +68,6 @@ module.exports = {
 
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeConstraint('CompetitionMentors', 'fk_competition_mentor_competition');
-    await queryInterface.removeConstraint('CompetitionMentors', 'fk_competition_mentor_mentor');
-
-    await queryInterface.removeConstraint('CompetitionMentors', 'unique_competition_mentor');
     await queryInterface.dropTable('CompetitionMentors');
   }
 };

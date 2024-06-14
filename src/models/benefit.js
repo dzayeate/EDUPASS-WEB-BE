@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Benefit extends Model {
     static associate(models) {
-      // define association here
+      Benefit.belongsToMany(models.Competition, { through: 'CompetitionBenefit', foreignKey: 'BenefitId' });
     }
   }
   Benefit.init({

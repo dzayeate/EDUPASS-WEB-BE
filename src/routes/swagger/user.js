@@ -149,10 +149,6 @@
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
  */
@@ -177,18 +173,9 @@
  *      responses:
  *          200:
  *              description: login token
- *              content:
- *                  application/json:
- *                      schema:
- *                          allOf:
- *                              - $ref: '#/components/schemas/BaseResponse'
  *
  *          500:
  *              description: Some server error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/BaseError'
  * 
  * 
  * /user/reset-password/{token}:
@@ -204,17 +191,8 @@
  *      responses:
  *          200:
  *              description: User data and token to manipulate for change password
- *              content:
- *                  application/json:
- *                      schema:
- *                          allOf:
- *                              $ref: '#/components/schemas/BaseResponse'
  *
  *          500:
  *              description: Some server error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/BaseError'
  * 
  */

@@ -6,6 +6,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Competition extends Model {
     static associate(models) {
+      Competition.belongsToMany(models.Benefit, { through: 'CompetitionBenefit', foreignKey: 'CompetitionId' });
       Competition.belongsToMany(models.Organizer, { through: 'CompetitionOrganizer', foreignKey: 'CompetitionId' });
     }
   }
