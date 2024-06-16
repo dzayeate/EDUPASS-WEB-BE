@@ -16,8 +16,8 @@ module.exports = {
 
     const now = new Date();
     const roles = [
-      { id: Sequelize.literal('UUID()'), name: ROLE.siswa, createdAt: now, updatedAt: now },
-      { id: Sequelize.literal('UUID()'), name: ROLE.mahasiswa, createdAt: now, updatedAt: now },
+      { id: Sequelize.literal('UUID()'), name: ROLE.Siswa, createdAt: now, updatedAt: now },
+      { id: Sequelize.literal('UUID()'), name: ROLE.Mahasiswa, createdAt: now, updatedAt: now },
       { id: Sequelize.literal('UUID()'), name: ROLE.EO, createdAt: now, updatedAt: now },
       { id: Sequelize.literal('UUID()'), name: ROLE.Sponsor, createdAt: now, updatedAt: now },
       { id: Sequelize.literal('UUID()'), name: ROLE.Perusahaan, createdAt: now, updatedAt: now },

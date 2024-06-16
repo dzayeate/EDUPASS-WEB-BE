@@ -1,37 +1,110 @@
-const { User, Role } = require("../../models");
+const { User, Role, sequelize, Biodate } = require("../../models");
 const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
 const BaseError = require("../../schemas/responses/BaseError");
 
-const Register = async(body) => {
+const Register = async (body, file) => {
   const validateBody = schema.validate(body);
-  if(validateBody.error) {
+  console.log("File:", file);
+  if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
-      message: validateBody.error.details.map(err => err.message).join(', '),
+      message: validateBody.error.details.map((err) => err.message).join(", "),
     });
   }
 
-  const { email, password, confirmPassword } = validateBody.value;
+  const {
+    email,
+    password,
+    confirmPassword,
+    roleName,
+    firstName,
+    lastName,
+    nik,
+    institutionName,
+    institutionLevel,
+    province,
+    regencies,
+    studyField,
+    reason,
+  } = validateBody.value;
 
-  if(password !== confirmPassword) {
+  if (password !== confirmPassword) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
       message: "Passwords do not match",
     });
   }
 
+  let biodateImage = null;
+
+  if (file) {
+    biodateImage = file.filename;
+  }
+
   const hashedPassword = await encryptPassword(password);
-  const defaultRole = await Role.getIdByName('Siswa');
 
-  const user = await User.create({
-    email,
-    password: hashedPassword,
-    roleId: defaultRole.id,
-  })
+  const transaction = await sequelize.transaction();
 
-  return user;
-}
+  try {
+    const role = await Role.getIdByName(roleName);
+
+    if (!role) {
+      throw new BaseError({
+        status: StatusCodes.BAD_REQUEST,
+        message: "Invalid role name",
+      });
+    }
+    //cek apakah nik sudah ada 
+    const isNikExists = await User.findOne({
+      include: [{
+        model: Biodate,
+        as: "biodate"
+      }],
+      where: { "$biodate.nik$": nik },
+      transaction,
+    });
+    
+    if (isNikExists) {
+      throw new BaseError({
+        status: StatusCodes.BAD_REQUEST,
+        message: "Nik sudah terdaftar",
+      });
+    }
+    const roleId = role.id;
+    const biodate = await Biodate.create(
+      {
+        firstName,
+        lastName,
+        nik,
+        institutionName,
+        institutionLevel,
+        province,
+        regencies,
+        studyField,
+        reason,
+        image: biodateImage,
+      },
+      { transaction }
+    );
+    const user = await User.create(
+      {
+        email,
+        password: hashedPassword,
+        roleId,
+        biodateId: biodate.id,
+      },
+      { transaction }
+    );
+   
+    await transaction.commit();
+
+    return user;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+};
 
 module.exports = Register;

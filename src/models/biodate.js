@@ -11,12 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Biodate.hasOne(models.User, {
+        foreignKey: 'biodateId',
+        as: 'user',
+      });
     }
   }
   Biodate.init({
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    nik: DataTypes.STRING,
+    nik: {
+      type: DataTypes.STRING,
+      unique: true
+    },
     institutionName: DataTypes.STRING,
     institutionLevel: DataTypes.STRING,
     province: DataTypes.STRING,

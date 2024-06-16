@@ -16,7 +16,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       nik: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       institutionName: {
         type: Sequelize.STRING

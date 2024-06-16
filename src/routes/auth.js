@@ -1,14 +1,14 @@
 const { Router } = require('express');
 const {
   RegisterUser,
-  getAllUsers,
   LoginUser
-} = require('../controllers/user');
+} = require('../controllers/auth');
+const  upload = require('../services/Upload/multerConfigUser');
 
 const router = Router();
 
-router.post('/register', [], RegisterUser);
+router.post('/register', upload.single('image'), [], RegisterUser);
 router.post('/login', [], LoginUser);
-router.get('/getUser', [], getAllUsers);
+
 
 module.exports = router;

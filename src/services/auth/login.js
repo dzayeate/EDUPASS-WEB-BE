@@ -5,7 +5,7 @@ const BaseError = require('../../schemas/responses/BaseError');
 const { getToken } = require('../../utils/jwt');
 const { isValidUserLogin } = require('../../utils/validate_user');
 
-const Login = async(body) => {
+const Login = async (body) => {
   const validateBody = schema.validate(body);
   if (validateBody.error) {
     throw new BaseError({
@@ -21,14 +21,14 @@ const Login = async(body) => {
   if (!isPasswordMatch) {
     throw new BaseError({
       status: StatusCodes.UNAUTHORIZED,
-      message: `Password salah`,
+      message: 'Password salah',
     });
   }
 
   delete userData.password;
   return {
     ...userData,
-    token: getToken(userData),
+    token: getToken({ ...userData, roleName: userData.roleName }),
   };
 };
 

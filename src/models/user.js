@@ -14,6 +14,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'roleId',
         as: 'role',
       });
+      User.belongsTo(models.Biodate, {
+        foreignKey: 'biodateId',
+        as: 'biodate',
+      });
+      User.hasMany(models.forgotPassword, {
+        foreignKey: 'userId',
+        as: 'forgotPassword',
+      });
     }
   }
   User.init({
@@ -33,9 +41,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     roleId: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'Role',
+        key: 'id'
+      }
+    },
+    biodateId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'Biodate',
         key: 'id'
       }
     }
