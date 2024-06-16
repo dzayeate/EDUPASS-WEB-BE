@@ -3,7 +3,7 @@ const {
   RegisterUser,
   LoginUser
 } = require('../controllers/auth');
-const  upload = require('../services/Upload/multerConfigUser');
+const upload = require('../middlewares/multer');
 
 const router = Router();
 

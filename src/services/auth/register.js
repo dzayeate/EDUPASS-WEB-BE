@@ -10,7 +10,7 @@ const Register = async (body, file) => {
   if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
-      message: validateBody.error.details.map((err) => err.message).join(", "),
+      message: validateBody.error,
     });
   }
 
@@ -37,12 +37,6 @@ const Register = async (body, file) => {
     });
   }
 
-  let biodateImage = null;
-
-  if (file) {
-    biodateImage = file.filename;
-  }
-
   const hashedPassword = await encryptPassword(password);
 
   const transaction = await sequelize.transaction();
@@ -56,7 +50,7 @@ const Register = async (body, file) => {
         message: "Invalid role name",
       });
     }
-    //cek apakah nik sudah ada 
+    // Cek apakah nik sudah ada 
     const isNikExists = await User.findOne({
       include: [{
         model: Biodate,
@@ -72,7 +66,12 @@ const Register = async (body, file) => {
         message: "Nik sudah terdaftar",
       });
     }
+
     const roleId = role.id;
+
+    // Pastikan properti filename ada pada objek file yang diunggah
+    const imageFileName = file ? file.filename : null;
+
     const biodate = await Biodate.create(
       {
         firstName,
@@ -84,7 +83,7 @@ const Register = async (body, file) => {
         regencies,
         studyField,
         reason,
-        image: biodateImage,
+        image: imageFileName, // Gunakan filename untuk image
       },
       { transaction }
     );

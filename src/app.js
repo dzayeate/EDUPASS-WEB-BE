@@ -21,7 +21,7 @@ const swaggerOption = {
     },
     server: [
       {
-        uri: process.env.BASE_URL || 'http://localhost:5000',
+        uri: process.env.BASE_URL,
       },
     ],
   },

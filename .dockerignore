@@ -10,3 +10,6 @@ docker*.yml
 node_modules
 
 README.md
+
+db
+public

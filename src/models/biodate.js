@@ -1,14 +1,12 @@
 'use strict';
+
+const baseUrl = process.env.BASE_URL;
+
 const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Biodate extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // define association here
       Biodate.hasOne(models.User, {
@@ -23,19 +21,55 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     nik: {
       type: DataTypes.STRING,
       unique: true
     },
-    institutionName: DataTypes.STRING,
-    institutionLevel: DataTypes.STRING,
-    province: DataTypes.STRING,
-    regencies: DataTypes.STRING,
-    studyField: DataTypes.STRING,
-    reason: DataTypes.STRING,
-    image: DataTypes.STRING
+    institutionName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    institutionLevel: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    province: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    regencies: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    studyField: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    reason: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    image: {
+      type: DataTypes.STRING,
+      get() {
+        const image = this.getDataValue('image');
+        if (!image) {
+          return null;
+        }
+        const baseUrl = process.env.BASE_URL;
+        const imageUrlParts = this.getDataValue('image').split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+      }
+    },
   }, {
     sequelize,
     modelName: 'Biodate',
