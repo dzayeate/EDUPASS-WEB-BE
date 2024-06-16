@@ -3,6 +3,8 @@ const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
 const BaseError = require("../../schemas/responses/BaseError");
+const fs = require("fs");
+const path = require("path");
 
 const Register = async (body, file) => {
   const validateBody = schema.validate(body);
@@ -102,6 +104,13 @@ const Register = async (body, file) => {
     return user;
   } catch (error) {
     await transaction.rollback();
+
+    //delete the image if the registration fails
+    if (file) {
+      const filePath = path.join(__dirname, '../../../public/images/users', file.filename);
+      fs.unlinkSync(filePath);
+    }
+
     throw error;
   }
 };
