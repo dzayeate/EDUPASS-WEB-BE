@@ -29,15 +29,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    nik: {
-      type: DataTypes.STRING,
-      unique: true
+    birthDate: {
+      type: DataTypes.DATE,
+      allowNull: false
     },
-    institutionName: {
+    gender: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    institutionLevel: {
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    address: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -49,18 +53,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    studyField: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    reason: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
     image: {
       type: DataTypes.STRING,
+      allowNull: true,
       get() {
         const image = this.getDataValue('image');
+        console.log('Getting proof URL:', this.getDataValue('image'));
         if (!image) {
           return null;
         }
@@ -68,6 +66,32 @@ module.exports = (sequelize, DataTypes) => {
         const imageUrlParts = this.getDataValue('image').split('/');
         const filename = imageUrlParts[imageUrlParts.length - 1];
         return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+      }
+    },
+    institutionName: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    field: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    pupils: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    proof: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      get() {
+        const proof = this.getDataValue('proof');
+        console.log('Getting proof URL:', this.getDataValue('proof'));
+        if (!proof) {
+          return null;
+        }
+        const imageUrlParts = this.getDataValue('proof').split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        return `${baseUrl}/file/download?url=${proof}&filename=${filename}`;
       }
     },
   }, {

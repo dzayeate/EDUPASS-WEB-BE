@@ -15,14 +15,16 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
-      nik: {
-        type: Sequelize.STRING,
-        unique: true
+      birthDate: {
+        type: Sequelize.DATE
       },
-      institutionName: {
+      gender: {
         type: Sequelize.STRING
       },
-      institutionLevel: {
+      phone: {
+        type: Sequelize.STRING
+      },
+      address: {
         type: Sequelize.STRING
       },
       province: {
@@ -31,13 +33,19 @@ module.exports = {
       regencies: {
         type: Sequelize.STRING
       },
-      studyField: {
-        type: Sequelize.STRING
-      },
-      reason: {
-        type: Sequelize.STRING
-      },
       image: {
+        type: Sequelize.STRING
+      },
+      institutionName: {
+        type: Sequelize.STRING
+      },
+      field: {
+        type: Sequelize.STRING
+      },
+      pupils: {
+        type: Sequelize.STRING
+      },
+      proof: {
         type: Sequelize.STRING
       },
       createdAt: {

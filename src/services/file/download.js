@@ -1,19 +1,33 @@
 const fs = require('fs');
 const path = require('path');
 
-const download = async (fileName) => {
-  try {
-    const filePath = path.join(__dirname, '../../../public/images/users', fileName);
+const directories = {
+  'image': path.join(__dirname, '../../../public/images/users'),
+  'proof': path.join(__dirname, '../../../public/images/proofs')
+};
 
-    // Periksa apakah file ada
+const download = async (fieldName, fileName) => {
+  try {
+    const directory = directories[fieldName];
+    if (!directory) {
+      console.error(`Invalid fieldName: ${fieldName}`);
+      throw new Error('Invalid fieldName');
+    }
+
+    const filePath = path.join(directory, fileName);
+
+    console.log(`File path resolved: ${filePath}`);
+
     if (!fs.existsSync(filePath)) {
+      console.error(`File not found: ${filePath}`);
       throw new Error('File not found');
     }
 
-    // Membaca file dan mengembalikan kontennya
     const fileContent = fs.readFileSync(filePath);
+    console.log(`File read successfully: ${filePath}`);
     return fileContent;
   } catch (error) {
+    console.error(`Error in download service: ${error.message}`);
     throw error;
   }
 };

@@ -37,18 +37,22 @@
  *                              description: your last name
  *                              type: string 
  *                              example: "Doe"
- *                          nik:
- *                              description: your unique ID number
+ *                          birthDate:
+ *                              description: your birth date
+ *                              type: Date
+ *                              example: "2000-01-01"
+ *                          gender:
+ *                              description: your gender
  *                              type: string 
- *                              example: "3220223332221145"
- *                          institutionName:
- *                              description: your institution where you study or work
- *                              type: string 
- *                              example: "Universitas Pasundan"
- *                          institutionLevel:
- *                              description: your level of study or position at your institution
- *                              type: string 
- *                              example: "3rd semester"
+ *                              example: "Laki_laki"
+ *                          phone:
+ *                             description: your phone number
+ *                             type: string
+ *                             example: "08123456789"
+ *                          address:
+ *                             description: your address
+ *                             type: string
+ *                             example: "Jalan Jendral Sudirman No 1"
  *                          province:
  *                              description: province where your city is located
  *                              type: string 
@@ -57,15 +61,22 @@
  *                              description: city where you live
  *                              type: string 
  *                              example: "Bandung"
- *                          studyField:
+ *                          image:
+ *                              description: file to upload
+ *                              type: file
+ *                          institutionName:
+ *                              description: your institution where you study or work
+ *                              type: string 
+ *                              example: "Universitas Pasundan"
+ *                          field:
  *                              description: your focus on the study field
  *                              type: string 
  *                              example: "Teknik Informatika"
- *                          reason:
- *                              description: reason why you registered in this application
+ *                          pupils:
+ *                              description: your unique ID number
  *                              type: string 
- *                              example: "Saya ingin belajar lebih banyak tentang pemrograman"
- *                          image:
+ *                              example: "203040111"
+ *                          proof:
  *                              description: file to upload
  *                              type: file
  *     responses:

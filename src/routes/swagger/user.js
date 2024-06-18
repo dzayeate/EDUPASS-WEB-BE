@@ -35,46 +35,6 @@
 /**
  * @swagger
  *
- * /user/sponsor:
- *   get:
- *     security:
- *       - bearerAuth: []
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *       500:
- *         description: Internal Server Error
- */
-
-/**
- * @swagger
- *
- * /user/mahasiswa:
- *   get:
- *     security:
- *       - bearerAuth: []
- *     summary: Get all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *       500:
- *         description: Internal Server Error
- */
-
-/**
- * @swagger
- *
  * /user/change-password:
  *   post:
  *      security:
