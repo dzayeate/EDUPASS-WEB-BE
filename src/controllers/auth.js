@@ -5,8 +5,8 @@ const Login = require('../services/auth/login');
 
 const RegisterUser = async (req, res) => {
   try {
-    const {body, file} = req;
-    const result = await Register(body, file);
+    const { body, files } = req;
+    const result = await Register(body, files);
 
     res.status(StatusCodes.CREATED).json(
       new BaseResponse({
@@ -14,19 +14,17 @@ const RegisterUser = async (req, res) => {
         message: 'Berhasil membuat user baru',
         data: result
       })
-    )
+    );
   } catch (error) {
     const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-    res
-      .status(status)
-      .json(
-        new BaseResponse({
-          status: status,
-          message: error.message
-        })
-      )
+    res.status(status).json(
+      new BaseResponse({
+        status: status,
+        message: error.message
+      })
+    );
   }
-}
+};
 
 const LoginUser = async (req, res) => {
   try {

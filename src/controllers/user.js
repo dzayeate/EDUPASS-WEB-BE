@@ -5,7 +5,6 @@ const FindUsers = require('../services/user/findUser');
 const ChangePassword = require('../services/user/change-password');
 const forgotPass = require('../services/user/forgot-password');
 const resetPassword = require('../services/user/reset-password');
-const { sponsor, mahasiswa } = require('../services/user/test');
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -21,44 +20,6 @@ const GetAllUsers = async (req, res) => {
           message: error.message
         })
       )
-  }
-}
-
-const TestSponsor = async (req, res) => {
-  try {
-    const data = await sponsor(req.body);
-    res.status(StatusCodes.OK).json(new BaseResponse({
-      status: StatusCodes.OK,
-      message: 'Berhasil',
-      data: data
-    }));
-  } catch (error) {
-    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-    res.status(status).json(
-      new BaseResponse({
-        status: status,
-        message: error.message
-      })
-    );
-  }
-}
-
-const TestMahasiswa = async (req, res) => {
-  try {
-    const data = await mahasiswa(req.body);
-    res.status(StatusCodes.OK).json(new BaseResponse({
-      status: StatusCodes.OK,
-      message: 'Berhasil',
-      data: data
-    }));
-  } catch (error) {
-    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-    res.status(status).json(
-      new BaseResponse({
-        status: status,
-        message: error.message
-      })
-    );
   }
 }
 
@@ -97,7 +58,6 @@ const ForgotPassword = async (req, res) => {
 const ResetPassword = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log('Token:', token); // Log the token value
     if (!token) {
       throw new Error('Token is missing');
     }
@@ -116,13 +76,8 @@ const ResetPassword = async (req, res) => {
   }
 }
 
-
-
-
 module.exports = {
   GetAllUsers,
-  TestSponsor,
-  TestMahasiswa,
   ChangePasswordUser,
   ForgotPassword,
   ResetPassword,
