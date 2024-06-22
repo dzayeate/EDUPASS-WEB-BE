@@ -23,35 +23,35 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     birthDate: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     gender: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     phone: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     province: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     regencies: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     image: {
       type: DataTypes.STRING,
@@ -70,15 +70,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     institutionName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     field: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     pupils: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     proof: {
       type: DataTypes.STRING,

@@ -21,6 +21,9 @@ module.exports = {
       { id: Sequelize.literal('UUID()'), name: ROLE.EO, createdAt: now, updatedAt: now },
       { id: Sequelize.literal('UUID()'), name: ROLE.Sponsor, createdAt: now, updatedAt: now },
       { id: Sequelize.literal('UUID()'), name: ROLE.Perusahaan, createdAt: now, updatedAt: now },
+      { id: Sequelize.literal('UUID()'), name: ROLE.Umum, createdAt: now, updatedAt: now },
+      { id: Sequelize.literal('UUID()'), name: ROLE.Juri, createdAt: now, updatedAt: now },
+      { id: Sequelize.literal('UUID()'), name: ROLE.Admin, createdAt: now, updatedAt: now },
     ];
 
     return queryInterface.bulkInsert('Roles', roles);

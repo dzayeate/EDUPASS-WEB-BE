@@ -4,6 +4,9 @@ const ROLE = {
   EO: 'Eo',
   Sponsor: 'Sponsor',
   Perusahaan: 'Perusahaan',
+  Umum: 'Umum',
+  Juri: 'Juri',
+  Admin: 'Admin'
 }
 
 module.exports = ROLE;

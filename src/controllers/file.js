@@ -34,7 +34,7 @@ const downloadFile = async (req, res) => {
       throw new Error('No file name specified');
     }
 
-    const fileContent = await downloadService.download('image', fileName);
+    const fileContent = await downloadService.download('proof', fileName);
 
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
