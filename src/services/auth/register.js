@@ -57,22 +57,6 @@ const Register = async (body, files) => {
       });
     }
 
-    const isPupilsExists = await User.findOne({
-      include: [{
-        model: Biodate,
-        as: "biodate"
-      }],
-      where: { "$biodate.pupils$": pupils },
-      transaction,
-    });
-    
-    if (isPupilsExists) {
-      throw new BaseError({
-        status: StatusCodes.BAD_REQUEST,
-        message: "Informasi sudah terdaftar",
-      });
-    }
-
     const roleId = role.id;
 
     const imageFile = files && files['image'] ? files['image'][0] : null;
