@@ -7,12 +7,12 @@ const fs = require("fs");
 const path = require("path");
 
 const Register = async (body, files) => {
-  const { error, value } = schema.validate(body, { abortEarly: false });
+  const validateBody = schema.validate(body);
 
-  if (error) {
+  if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
-      message: error.details.map(err => err.message).join(', '),
+      message: validateBody.error,
     });
   }
 
@@ -20,6 +20,7 @@ const Register = async (body, files) => {
     email,
     password,
     confirmPassword,
+    roleName,
     firstName,
     lastName,
     birthDate,
@@ -31,9 +32,8 @@ const Register = async (body, files) => {
     institutionName,
     field,
     pupils
-  } = value;
+  } = validateBody.value;
 
-  // Ensuring that birthDate is either a valid date or null
   const validBirthDate = birthDate ? new Date(birthDate) : null;
 
   if (password !== confirmPassword) {
@@ -48,7 +48,7 @@ const Register = async (body, files) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const role = await Role.getIdByName("Umum"); // Hardcoded role name
+    const role = await Role.getIdByName(roleName);
 
     if (!role) {
       throw new BaseError({
@@ -65,7 +65,7 @@ const Register = async (body, files) => {
       where: { "$biodate.pupils$": pupils },
       transaction,
     });
-
+    
     if (isPupilsExists) {
       throw new BaseError({
         status: StatusCodes.BAD_REQUEST,
@@ -85,7 +85,7 @@ const Register = async (body, files) => {
       {
         firstName,
         lastName,
-        birthDate: validBirthDate, // Insert the correctly handled date
+        birthDate: validBirthDate,
         gender,
         phone,
         address,
@@ -109,7 +109,7 @@ const Register = async (body, files) => {
       },
       { transaction }
     );
-
+   
     await transaction.commit();
 
     return user;

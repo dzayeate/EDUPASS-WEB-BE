@@ -57,15 +57,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       get() {
-        const image = this.getDataValue('image');
-        console.log('Getting proof URL:', this.getDataValue('image'));
-        if (!image) {
+        const imageUrl = this.getDataValue('image');
+        console.log('Getting image URL:', imageUrl);
+        if (!imageUrl) {
           return null;
         }
-        const baseUrl = process.env.BASE_URL;
-        const imageUrlParts = this.getDataValue('image').split('/');
+        const imageUrlParts = imageUrl.split('/');
         const filename = imageUrlParts[imageUrlParts.length - 1];
-        return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+        const baseUrl = process.env.BASE_URL;
+        return `${baseUrl}/file/download?fieldName=image&fileName=${filename}`;
       }
     },
     institutionName: {
@@ -91,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
         }
         const imageUrlParts = this.getDataValue('proof').split('/');
         const filename = imageUrlParts[imageUrlParts.length - 1];
-        return `${baseUrl}/file/download?url=${proof}&filename=${filename}`;
+        return `${baseUrl}/file/download?fieldName=proof&fileName=${filename}`;
       }
     },
   }, {
