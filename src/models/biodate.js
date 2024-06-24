@@ -58,7 +58,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       get() {
         const imageUrl = this.getDataValue('image');
-        console.log('Getting image URL:', imageUrl);
         if (!imageUrl) {
           return null;
         }
@@ -85,7 +84,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       get() {
         const proof = this.getDataValue('proof');
-        console.log('Getting proof URL:', this.getDataValue('proof'));
         if (!proof) {
           return null;
         }

@@ -5,6 +5,7 @@ const FindUsers = require('../services/user/findUser');
 const ChangePassword = require('../services/user/change-password');
 const forgotPass = require('../services/user/forgot-password');
 const resetPassword = require('../services/user/reset-password');
+const updateBiodata = require('../services/user/update-biodate');
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -76,9 +77,27 @@ const ResetPassword = async (req, res) => {
   }
 }
 
+const updateBiodateUser = async(req, res) => {
+  try {
+    const { id } = req.query; // Ambil id dari query parameters
+    await updateBiodata(id, req.body, req.files); // Teruskan id ke fungsi updateBiodata
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Biodata berhasil diubah'
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(new BaseResponse({
+      status: status,
+      message: error.message
+    }));
+  }
+}
+
 module.exports = {
   GetAllUsers,
   ChangePasswordUser,
   ForgotPassword,
   ResetPassword,
+  updateBiodateUser
 }
