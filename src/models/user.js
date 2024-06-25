@@ -22,6 +22,20 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'forgotPassword',
       });
+      User.belongsToMany(models.CompetitionMentor, {
+        through: 'competitionMentor',
+        foreignKey: 'UserId',
+        as: 'mentor',
+      });
+      User.belongsToMany(models.CompetitionOrganizer, {
+        through: 'competitionOrganizer',
+        foreignKey: 'userId',
+        as: 'organizer'
+      });
+      User.belongsTo(models.Sponsor, {
+        foreignKey: 'userId',
+        as:'sponsor'
+    });
     }
   }
   User.init({

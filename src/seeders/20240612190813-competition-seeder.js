@@ -5,18 +5,18 @@ const { v4: uuidv4 } = require('uuid');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    const { Benefit, Competition, Mentor, Organizer, CompetitionBenefit, CompetitionMentor, CompetitionOrganizer } = require('../models');
+    const { Competition, Organizer, CompetitionBenefit, CompetitionMentor, CompetitionOrganizer } = require('../models');
 
-    const benefits = [
-      {
-        id: uuidv4(),
-        description: 'Hadiah Uang Tunai',
-      },
-      {
-        id: uuidv4(),
-        description: 'Sertifikat',
-      },
-    ]
+    // const benefits = [
+    //   {
+    //     id: uuidv4(),
+    //     description: 'Hadiah Uang Tunai',
+    //   },
+    //   {
+    //     id: uuidv4(),
+    //     description: 'Sertifikat',
+    //   },
+    // ]
 
     const competition = [
       {
@@ -39,72 +39,47 @@ module.exports = {
       },
     ]
 
-    const mentors = [
-      {
-        id: uuidv4(),
-        name: 'John Doe',
-        expertise: 'Web Development',
-      },
-      {
-        id: uuidv4(),
-        name: 'Jane Doe',
-        expertise: 'Mobile Development',
-      },
-    ]
+    // const mentors = [
+    //   {
+    //     id: uuidv4(),
+    //     name: 'John Doe',
+    //     expertise: 'Web Development',
+    //   },
+    //   {
+    //     id: uuidv4(),
+    //     name: 'Jane Doe',
+    //     expertise: 'Mobile Development',
+    //   },
+    // ]
 
-    const organizers = [
-      {
-        id: uuidv4(),
-        name: 'GDSC',
-        contactInfo: 'www.gdsc.com'
-      },
-      {
-        id: uuidv4(),
-        name: 'HMTIF',
-        contactInfo: 'www.hmtif.com'
-      }
-    ]
+    // const organizers = [
+    //   {
+    //     id: uuidv4(),
+    //     userId: uuidv4(),
+    //     contactInfo: 'www.gdsc.com'
+    //   },
+    //   {
+    //     id: uuidv4(),
+    //     userId: uuidv4(),
+    //     contactInfo: 'www.hmtif.com'
+    //   }
+    // ]
 
-    const competitionBenefits = [
-      {
-        CompetitionId: competition[0].id,
-        BenefitId: benefits[0].id,
-      },
-      {
-        CompetitionId: competition[1].id,
-        BenefitId: benefits[1].id,
-      },
-    ]
+    // const competitionOrganizers = [
+    //   {
+    //     CompetitionId: competition[0].id,
+    //     OrganizerId: organizers[0].id,
+    //   },
+    //   {
+    //     CompetitionId: competition[1].id,
+    //     OrganizerId: organizers[1].id,
+    //   },
+    // ]
 
-    const competitionMentors = [
-      {
-        CompetitionId: competition[0].id,
-        MentorId: mentors[0].id,
-      },
-      {
-        CompetitionId: competition[1].id,
-        MentorId: mentors[1].id,
-      },
-    ]
-
-    const competitionOrganizers = [
-      {
-        CompetitionId: competition[0].id,
-        OrganizerId: organizers[0].id,
-      },
-      {
-        CompetitionId: competition[1].id,
-        OrganizerId: organizers[1].id,
-      },
-    ]
-
-    await Benefit.bulkCreate(benefits);
     await Competition.bulkCreate(competition);
-    await Mentor.bulkCreate(mentors);
-    await Organizer.bulkCreate(organizers);
-    await CompetitionBenefit.bulkCreate(competitionBenefits);
-    await CompetitionMentor.bulkCreate(competitionMentors);
-    await CompetitionOrganizer.bulkCreate(competitionOrganizers);
+    // await Organizer.bulkCreate(organizers);
+    // await CompetitionMentor.bulkCreate(competitionMentors);
+    // await CompetitionOrganizer.bulkCreate(competitionOrganizers);
   },
 
   async down (queryInterface, Sequelize) {
