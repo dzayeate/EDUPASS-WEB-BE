@@ -28,13 +28,13 @@ const uploadFile = async (req, res) => {
 
 const downloadFile = async (req, res) => {
   try {
-    const { url: fileName } = req.query;  // Menggunakan query parameter
+    const { fieldName, fileName } = req.query;
 
-    if (!fileName) {
-      throw new Error('No file name specified');
+    if (!fieldName || !fileName) {
+      throw new Error('Missing fieldName or fileName');
     }
 
-    const fileContent = await downloadService.download(fileName);
+    const fileContent = await downloadService.download(fieldName, fileName);
 
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
@@ -49,6 +49,7 @@ const downloadFile = async (req, res) => {
     );
   }
 };
+
 
 module.exports = {
   uploadFile,

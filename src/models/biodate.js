@@ -23,51 +23,73 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     lastName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
-    nik: {
-      type: DataTypes.STRING,
-      unique: true
+    birthDate: {
+      type: DataTypes.DATE,
+      allowNull: true
     },
-    institutionName: {
+    gender: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
-    institutionLevel: {
+    phone: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     province: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     regencies: {
       type: DataTypes.STRING,
-      allowNull: false
-    },
-    studyField: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    reason: {
-      type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     image: {
       type: DataTypes.STRING,
+      allowNull: true,
       get() {
-        const image = this.getDataValue('image');
-        if (!image) {
+        const imageUrl = this.getDataValue('image');
+        if (!imageUrl) {
           return null;
         }
-        const baseUrl = process.env.BASE_URL;
-        const imageUrlParts = this.getDataValue('image').split('/');
+        const imageUrlParts = imageUrl.split('/');
         const filename = imageUrlParts[imageUrlParts.length - 1];
-        return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+        const baseUrl = process.env.BASE_URL;
+        return `${baseUrl}/file/download?fieldName=image&fileName=${filename}`;
+      }
+    },
+    institutionName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    field: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    pupils: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    proof: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      get() {
+        const proof = this.getDataValue('proof');
+        if (!proof) {
+          return null;
+        }
+        const imageUrlParts = this.getDataValue('proof').split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        return `${baseUrl}/file/download?fieldName=proof&fileName=${filename}`;
       }
     },
   }, {

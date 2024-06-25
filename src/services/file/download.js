@@ -1,16 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const download = async (fileName) => {
-  try {
-    const filePath = path.join(__dirname, '../../../public/images/users', fileName);
+const directories = {
+  'image': path.join(__dirname, '../../../public/images/users'),
+  'proof': path.join(__dirname, '../../../public/images/proofs')
+};
 
-    // Periksa apakah file ada
+const download = async (fieldName, fileName) => {
+  try {
+    const directory = directories[fieldName];
+    if (!directory) {
+      throw new Error('Invalid fieldName');
+    }
+
+    const filePath = path.join(directory, fileName);
+
     if (!fs.existsSync(filePath)) {
       throw new Error('File not found');
     }
 
-    // Membaca file dan mengembalikan kontennya
     const fileContent = fs.readFileSync(filePath);
     return fileContent;
   } catch (error) {
