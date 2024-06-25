@@ -198,4 +198,26 @@
  *       500:
  *         description: Internal Server Error
  * 
+ * /user/delete-user/{userId}:
+ *   delete:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Delete user by ID
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user to delete
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal Server Error
+ * 
  */

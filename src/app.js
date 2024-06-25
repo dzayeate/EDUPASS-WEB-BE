@@ -7,6 +7,8 @@ const cors = require('cors');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const router = require('./routes/index');
+const expressListEndpoints = require('express-list-endpoints');
+
 const { forgotPasswordJob } = require('./utils/cron');
 
 const app = express();
@@ -50,5 +52,8 @@ app.get('/', (req, res) => {
 forgotPasswordJob.start();
 
 app.use(router);
+
+const endpoints = expressListEndpoints(app);
+console.log(endpoints);
 
 module.exports = app;

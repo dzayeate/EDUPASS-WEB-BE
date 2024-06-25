@@ -20,17 +20,21 @@ const isValidUserLogin = async (email) => {
 };
 
 const isValidUser = async (id) => {
+  console.log(`Validation - isValidUser called with id: ${id}`);
   const isUserExists = await User.findOne({
     where: { id }
   });
   if (!isUserExists) {
+    console.log(`Validation - User not found with id: ${id}`);
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
       message: `User tidak ditemukan`,
     });
   }
+  console.log(`Validation - User found with id: ${id}`);
   return isUserExists.dataValues;
 };
+
 
 module.exports = {
   isValidUserLogin,

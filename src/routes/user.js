@@ -4,7 +4,8 @@ const {
   ChangePasswordUser,
   ForgotPassword,
   ResetPassword,
-  updateBiodateUser,
+  UpdateBiodateUser,
+  DeleteUsers
 } = require('../controllers/user');
 const ValidateAccess = require('../middlewares/access');
 const AuthorizationCheck = require('../middlewares/auth');
@@ -16,6 +17,7 @@ router.get('/getUser', [], GetAllUsers);
 router.post('/change-password', [ AuthorizationCheck ], ChangePasswordUser);
 router.post('/forgot-password', [], ForgotPassword);
 router.get('/reset-password/:token', [], ResetPassword);
-router.put('/update-biodate', [ AuthorizationCheck, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'proof', maxCount: 1 }])], updateBiodateUser);
+router.put('/update-biodate', [ AuthorizationCheck, upload.fields([{ name: 'image', maxCount: 1 }, { name: 'proof', maxCount: 1 }])], UpdateBiodateUser);
+router.delete('/delete-user/:userId', [ ValidateAccess ], DeleteUsers);
 
 module.exports = router;

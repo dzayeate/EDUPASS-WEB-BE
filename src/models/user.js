@@ -17,11 +17,16 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Biodate, {
         foreignKey: 'biodateId',
         as: 'biodate',
+        onDelete: 'CASCADE',
       });
       User.hasMany(models.forgotPassword, {
         foreignKey: 'userId',
         as: 'forgotPassword',
       });
+    }
+
+    static getBiodate() {
+      return this.biodate;
     }
   }
   User.init({
