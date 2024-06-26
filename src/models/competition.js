@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class Competition extends Model {
     static associate(models) {
       // define association here
-      Competition.belongsTo(models.CompetitionOrganizer, {
+      Competition.hasOne(models.CompetitionOrganizer, {
         foreignKey: 'CompetitionId',
         as: 'organizer'
       });
@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'CompetitionId',
         as: 'mentor'
       });
-      Competition.belongsToMany(models.Sponsor, {
-        through: 'Sponsor',
+      Competition.hasMany(models.Sponsor, {
         foreignKey: 'CompetitionId',
         as: 'sponsor'
       });

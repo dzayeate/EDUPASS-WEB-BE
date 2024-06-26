@@ -23,17 +23,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'userId',
         as: 'forgotPassword',
       });
-      User.belongsToMany(models.CompetitionMentor, {
-        through: 'competitionMentor',
+      User.hasMany(models.CompetitionMentor, {
         foreignKey: 'UserId',
         as: 'mentor',
       });
-      User.belongsToMany(models.CompetitionOrganizer, {
-        through: 'competitionOrganizer',
+      User.hasMany(models.CompetitionOrganizer, {
         foreignKey: 'userId',
         as: 'organizer'
       });
-      User.belongsTo(models.Sponsor, {
+      User.hasMany(models.Sponsor, {
         foreignKey: 'userId',
         as:'sponsor'
     });

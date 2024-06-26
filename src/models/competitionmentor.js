@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       CompetitionMentor.belongsTo(models.Competition, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'competition',
       });
       CompetitionMentor.belongsTo(models.User, {
-        foreignKey: 'UserId',
+        foreignKey: 'userId',
         as:'mentor',
       });
     }

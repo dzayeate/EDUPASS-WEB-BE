@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      CompetitionId: {
+      competitionId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -17,7 +17,7 @@ module.exports = {
           key: 'id'
         }
       },
-      UserId: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {

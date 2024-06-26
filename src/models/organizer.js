@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Organizer extends Model {
     static associate(models) {
       Organizer.belongsToMany(models.User, {
-        through:'User',
+        through:'Organizer',
         foreignKey: 'userId',
         as: 'organizer'
       });
