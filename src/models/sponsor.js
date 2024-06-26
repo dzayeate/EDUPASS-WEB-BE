@@ -3,44 +3,51 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class CompetitionMentor extends Model {
+  class Sponsor extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
       // define association here
-      CompetitionMentor.belongsTo(models.Competition, {
+      Sponsor.belongsToMany(models.Competition, {
+        through:'Sponsor',
         foreignKey: 'competitionId',
         as: 'competition',
       });
-      CompetitionMentor.belongsTo(models.User, {
+      Sponsor.belongsTo(models.User, {
         foreignKey: 'userId',
-        as:'mentor',
+        as: 'user',
       });
     }
   }
-  CompetitionMentor.init({
-    id: {
+  Sponsor.init({
+    id:{
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    CompetitionId: {
-      type: DataTypes.UUID,
+    competitionId: {
+      type : DataTypes.UUID,
       allowNull: false,
       references: {
         model: 'Competition',
         key: 'id'
       }
-    },
-    UserId: {
+  },
+    userId: {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'Mentor',
+        model: 'User',
         key: 'id'
       }
-    }
-  }, {
+    },
+    
+  },{
     sequelize,
-    modelName: 'CompetitionMentor',
+    modelName: 'Sponsor',
   });
-  return CompetitionMentor;
+  return Sponsor;
 };

@@ -6,8 +6,20 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Competition extends Model {
     static associate(models) {
-      Competition.belongsToMany(models.Benefit, { through: 'CompetitionBenefit', foreignKey: 'CompetitionId' });
-      Competition.belongsToMany(models.Organizer, { through: 'CompetitionOrganizer', foreignKey: 'CompetitionId' });
+      // define association here
+      Competition.hasOne(models.CompetitionOrganizer, {
+        foreignKey: 'CompetitionId',
+        as: 'organizer'
+      });
+      Competition.hasMany(models.CompetitionMentor, {
+        foreignKey: 'CompetitionId',
+        as: 'mentor'
+      });
+      Competition.hasMany(models.Sponsor, {
+        foreignKey: 'CompetitionId',
+        as: 'sponsor'
+      });
+
     }
   }
   Competition.init({
@@ -39,6 +51,19 @@ module.exports = (sequelize, DataTypes) => {
     platform: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    banner: {
+      type: DataTypes.STRING,
+      get() {
+        const banner = this.getDataValue('banner');
+        if (!banner) {
+          return null;
+        }
+        const baseUrl = process.env.BASE_URL;
+        const imageUrlParts = this.getDataValue('banner').split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+      }
     },
   }, {
     sequelize,

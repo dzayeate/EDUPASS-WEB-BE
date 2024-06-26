@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       static associate(models) {
           // define association here
           forgotPassword.belongsTo(models.User, {
-              foreignKey: 'biodateId',
+              foreignKey: 'userId',
+              as: 'user',
           });
       }
   }

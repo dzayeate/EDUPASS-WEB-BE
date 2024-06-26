@@ -5,7 +5,11 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Organizer extends Model {
     static associate(models) {
-      Organizer.belongsToMany(models.Competition, { through: 'CompetitionOrganizer', foreignKey: 'OrganizerId' });
+      Organizer.belongsToMany(models.User, {
+        through:'Organizer',
+        foreignKey: 'userId',
+        as: 'organizer'
+      });
     }
   }
   Organizer.init({
@@ -14,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
-    name: {
-      type: DataTypes.STRING,
+    userId: {
+      type: DataTypes.UUID,
       allowNull: false
     },
     contactInfo: {
