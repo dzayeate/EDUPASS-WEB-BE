@@ -7,6 +7,7 @@ const forgotPass = require('../services/user/forgot-password');
 const resetPassword = require('../services/user/reset-password');
 const updateBiodata = require('../services/user/update-biodate');
 const DeleteUser = require('../services/user/delete-user');
+const { sponsor } = require('../services/user/test');
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -118,11 +119,30 @@ const DeleteUsers = async (req, res) => {
   }
 };
 
+const Test = async (req, res) => {
+  try {
+    const result = await sponsor();
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Success',
+      data: result
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(new BaseResponse({
+      status: status,
+      message: error.message
+    }));
+  }
+
+}
+
 module.exports = {
   GetAllUsers,
   ChangePasswordUser,
   ForgotPassword,
   ResetPassword,
   UpdateBiodateUser,
-  DeleteUsers
+  DeleteUsers,
+  sponsor
 }
