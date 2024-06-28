@@ -220,12 +220,27 @@
  *       500:
  *         description: Internal Server Error
  * 
- * /user/sponsor:
- *   get:
+ * 
+ * /user/change-role:
+ *   post:
  *     security:
  *       - bearerAuth: []
  *     summary: Get all users
  *     tags: [Users]
+ *     requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          userId:
+ *                              description: change role
+ *                              type: string 
+ *                              example: "1234-5678"
+ *                          roleName:
+ *                              description: change role
+ *                              type: string 
+ *                              example: "Eo"
  *     responses:
  *       200:
  *         description: A list of users
