@@ -1,6 +1,6 @@
 'use strict';
 const {
-  Model
+  Model, Op
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -39,6 +39,23 @@ module.exports = (sequelize, DataTypes) => {
 
     static getBiodate() {
       return this.biodate;
+    }
+
+    static async getUserByKeyword(keyword) {
+      return this.findOne({
+        where: {
+          [Op.or]: [
+            { email: { [Op.like]: `%${keyword}%` } },
+            { '$biodate.firstName$': { [Op.like]: `%${keyword}%` } },
+            { '$biodate.lastName$': { [Op.like]: `%${keyword}%` } }
+          ]
+        },
+        include: [{
+          model: sequelize.models.Biodate,
+          as: 'biodate',
+          attributes: ['firstName', 'lastName']
+        }]
+      });
     }
   }
   User.init({

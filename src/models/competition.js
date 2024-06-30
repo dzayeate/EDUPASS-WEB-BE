@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class Competition extends Model {
     static associate(models) {
       // define association here
-      Competition.hasOne(models.CompetitionOrganizer, {
+      Competition.hasMany(models.CompetitionOrganizer, {
         foreignKey: 'CompetitionId',
         as: 'organizer'
       });
@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     name: {
       type: DataTypes.STRING,
+      unique: false,
       allowNull: false
     },
     description: {
