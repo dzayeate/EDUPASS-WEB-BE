@@ -1,12 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const schema = require('../../schemas/validations/competition/register-competiton-eo');
+const schema = require('../../schemas/validations/competition/registerCompetitonPeserta');
 const { StatusCodes } = require('http-status-codes');
 const BaseError = require('../../schemas/responses/BaseError');
-const { User, Competition, CompetitionRegistration, sequelize} = require('../../models')
+const { User, Competition, CompetitionRegistration, CompetitionTeam, sequelize } = require('../../models');
 
-const registerCompetitionEO = async (userId, body, files) => {
-    console.log("Validating request body:", body);
+const registerCompetitonPeserta = async (userId, body, files) => {
     const validateBody = schema.validate(body, { abortEarly: false });
 
     if (validateBody.error) {
@@ -21,7 +20,6 @@ const registerCompetitionEO = async (userId, body, files) => {
         competitionId,
         domicile,
         phoneNumber,
-        supportingDocuments,
         isTeam,
         teamSize,
         teamMembers
@@ -30,7 +28,6 @@ const registerCompetitionEO = async (userId, body, files) => {
     const transaction = await sequelize.transaction();
 
     try {
-        console.log("Checking user and competition existence");
         const user = await User.findByPk(userId);
         if (!user) {
             console.error("User not found");
@@ -49,7 +46,7 @@ const registerCompetitionEO = async (userId, body, files) => {
             });
         }
 
-        // Validate team members user IDs
+        // Validate team members user IDs if it's a team competition
         if (isTeam && teamMembers && teamMembers.length > 0) {
             const userIds = teamMembers.map(member => member.userId);
             const validUsers = await User.findAll({
@@ -69,7 +66,6 @@ const registerCompetitionEO = async (userId, body, files) => {
         const supportingDocumentFile = files && files['supportingDocuments'] ? files['supportingDocuments'][0] : null;
         const supportingDocumentFileName = supportingDocumentFile ? supportingDocumentFile.filename : null;
 
-        console.log("Creating competition registration");
         const competitionRegistration = await CompetitionRegistration.create({
             userId,
             competitionId,
@@ -81,7 +77,6 @@ const registerCompetitionEO = async (userId, body, files) => {
         }, { transaction });
 
         if (isTeam && teamMembers && teamMembers.length > 0) {
-            console.log("Adding team members");
             const teamData = teamMembers.map(member => ({
                 registrationId: competitionRegistration.id,
                 userId: member.userId
@@ -90,7 +85,6 @@ const registerCompetitionEO = async (userId, body, files) => {
         }
 
         await transaction.commit();
-        console.log("Competition registration successful");
 
         return {
             status: StatusCodes.CREATED,
@@ -104,7 +98,7 @@ const registerCompetitionEO = async (userId, body, files) => {
         if (files && files['supportingDocuments']) {
             const supportingDocumentFileName = files['supportingDocuments'][0].filename;
             if (supportingDocumentFileName) {
-                const filePath = path.join(__dirname, '../../public/documents', supportingDocumentFileName);
+                const filePath = path.join(__dirname, '../../../documents/competitions', supportingDocumentFileName);
                 fs.unlinkSync(filePath);
             }
         }
@@ -116,4 +110,4 @@ const registerCompetitionEO = async (userId, body, files) => {
     }
 };
 
-module.exports = registerCompetitionEO;
+module.exports = registerCompetitonPeserta;

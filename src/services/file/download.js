@@ -3,7 +3,8 @@ const path = require('path');
 
 const directories = {
   'image': path.join(__dirname, '../../../public/images/users'),
-  'proof': path.join(__dirname, '../../../public/images/proofs')
+  'proof': path.join(__dirname, '../../../public/images/proofs'),
+  'supportingDocuments': path.join(__dirname, '../../../documents/competitions')
 };
 
 const download = async (fieldName, fileName) => {

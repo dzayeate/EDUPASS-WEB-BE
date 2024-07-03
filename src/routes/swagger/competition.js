@@ -1,7 +1,7 @@
 /**
  * @swagger
  *
- * /competition/register-competition-eo:
+ * /competition/register/competition:
  *   post:
  *     security:
  *      - bearerAuth: []
@@ -18,7 +18,7 @@
  *                 type: string
  *                 format: uuid
  *                 description: ID of the competition
- *                 example: 3ccbb87c-cbcf-4cab-8851-cc27310dee0e
+ *                 example: 23ff82e9-23a0-49b2-b927-6e21d72d81bb
  *               domicile:
  *                 type: string
  *                 description: Domicile of the user
@@ -37,9 +37,10 @@
  *               teamSize:
  *                 type: integer
  *                 description: Size of the team if isTeam is true
- *                 example: 1
+ *                 example: 2
  *               teamMembers:
  *                 type: array
+ *                 description: List of team members if isTeam is true
  *                 items:
  *                   type: object
  *                   properties:
@@ -47,7 +48,9 @@
  *                       type: string
  *                       format: uuid
  *                       description: ID of the team member
- *                       example: e630673e-f91f-4c9a-bca6-250c7cbcf542
+ *                 example:
+ *                   - userId: 4dcda2eb-6ec0-43cc-9537-cb45a8ff9b6e
+ *                   - userId: 57ededa2-f937-43cc-b83c-7d01d80ded44
  *     responses:
  *       201:
  *         description: Registration successful
@@ -66,9 +69,39 @@
  *         description: User or Competition not found
  *       500:
  *         description: Internal Server Error
- * 
- * 
+ *
  * /competition/findCompetition:
+ *   get:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: Get Competition
+ *     tags: [Competitions]
+ *     parameters:
+ *      - in: query
+ *        name: page
+ *        required: false
+ *        description: The page of list
+ *        example: 1
+ *      - in: query
+ *        name: length
+ *        required: false
+ *        description: The length of list
+ *        example: 10
+ *      - in: query
+ *        name: search
+ *        required: false
+ *        description: search with keyword competition name
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
+ *
+ * /competition/findCompetitionRegistration:
  *   get:
  *     summary: Get Competition
  *     tags: [Competitions]
@@ -97,5 +130,5 @@
  *       500:
  *         description: Internal Server Error
  * 
- *
+ * 
  */

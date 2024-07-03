@@ -3,8 +3,9 @@ const BaseResponse = require('../schemas/responses/BaseResponse');
 const DataTable = require('../schemas/responses/DataTable');
 const BaseError = require('../schemas/responses/BaseError');
 const registerCompetition = require('../services/competition/register');
-const registerCompetitionEO = require('../services/competition/register-competition-eo');
+const registerCompetitionPeserta = require('../services/competition/registerCompetitonPeserta');
 const findCompetition = require('../services/competition/findCompetition');
+const findCompetitionRegistration = require('../services/competition/findCompetitionRegistrations');
 
 const RegisterCompetition = async (req, res) => {
     try {
@@ -29,18 +30,16 @@ const RegisterCompetition = async (req, res) => {
             new BaseError({
                 status: status,
                 message: error.message || 'Internal Server Error',
-                error: error.stack // Add this line to include the stack trace in the response for debugging
+                error: error.stack
             })
         );
     }
 }
 
-const RegisterCompetitionEO = async (req, res) => {
+const RegisterCompetitonPeserta = async (req, res) => {
     try {
         const { body, files } = req;
         const user = res.locals.user;
-
-        console.log("Request received for registering competition:", { user, body, files });
 
         if (!user || !user.id) {
             throw new BaseError({
@@ -49,7 +48,12 @@ const RegisterCompetitionEO = async (req, res) => {
             });
         }
 
-        // Parse teamMembers if it's a string and ensure it is an array
+        if (body.teamSize === '') {
+            body.teamSize = null;
+        } else if (body.teamSize) {
+            body.teamSize = Number(body.teamSize);
+        }
+
         if (body.teamMembers && typeof body.teamMembers === 'string') {
             try {
                 const parsedTeamMembers = JSON.parse(body.teamMembers);
@@ -63,11 +67,11 @@ const RegisterCompetitionEO = async (req, res) => {
                     message: 'Invalid JSON format for teamMembers or teamMembers is not an array',
                 });
             }
+        } else if (body.teamMembers === '') {
+            body.teamMembers = [];
         }
 
-        const result = await registerCompetitionEO(user.id, body, files);
-
-        console.log("Competition registration result:", result);
+        const result = await registerCompetitionPeserta(user.id, body, files);
         res.status(StatusCodes.CREATED).json(
             new BaseResponse({
                 status: StatusCodes.CREATED,
@@ -77,7 +81,6 @@ const RegisterCompetitionEO = async (req, res) => {
         );
     } catch (error) {
         const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-        console.error("Error in RegisterCompetitionEO controller:", error);
         res.status(status).json(
             new BaseError({
                 status: status,
@@ -103,10 +106,31 @@ const FindCompetition = async (req, res) => {
           })
         )
     }
-  }
+}
+
+const FindCompetitionRegistration = async (req, res) => {
+    try {
+      const competition = await findCompetitionRegistration(req.query);
+      res.status(StatusCodes.OK).json({
+        data: competition.data,
+        total: competition.total
+      });
+    } catch (error) {
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res
+          .status(status)
+          .json(
+            new BaseResponse({
+              status: status,
+              message: error.message
+            })
+          )
+    }
+};
 
 module.exports = {
     RegisterCompetition,
-    RegisterCompetitionEO,
-    FindCompetition
+    RegisterCompetitonPeserta,
+    FindCompetition,
+    FindCompetitionRegistration
 }

@@ -100,7 +100,6 @@ const UpdateBiodateUser = async(req, res) => {
 const DeleteUsers = async (req, res) => {
   try {
     const userId = req.params.userId;
-    console.log(`Received userId: ${userId}`);
     
     const result = await DeleteUser(userId);
 

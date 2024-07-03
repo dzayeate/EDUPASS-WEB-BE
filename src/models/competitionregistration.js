@@ -1,4 +1,7 @@
 'use strict';
+
+const baseUrl = process.env.BASE_URL;
+
 const {
   Model
 } = require('sequelize');
@@ -54,7 +57,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     supportingDocuments: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      get() {
+        const imageUrl = this.getDataValue('supportingDocuments');
+        if (!imageUrl) {
+          return null;
+        }
+        const imageUrlParts = imageUrl.split('/');
+        const filename = imageUrlParts[imageUrlParts.length - 1];
+        const baseUrl = process.env.BASE_URL;
+        return `${baseUrl}/file/download?fieldName=supportingDocuments&fileName=${filename}`;
+      }
     },
     isTeam: {
       type: DataTypes.BOOLEAN,
