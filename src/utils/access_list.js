@@ -20,5 +20,10 @@ module.exports = [
     path: '/competition/register',
     method: 'POST',
     allowed_role: [ROLE.EO]
+  },
+  {
+    path: '/competition/register-competition-eo',
+    method: 'POST',
+    allowed_role: [ROLE.Umum]
   }
 ]
