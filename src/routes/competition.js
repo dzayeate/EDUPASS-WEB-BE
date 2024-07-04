@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const {
     RegisterCompetition,
-    RegisterCompetitonPeserta,
+    RegisterCompetitionPeserta,
     FindCompetition,
     FindCompetitionRegistration
 } = require('../controllers/competition');
@@ -12,8 +12,8 @@ const AuthorizationCheck = require('../middlewares/auth');
 const router = Router();
 
 router.post('/register', upload.fields([{ name: 'image', maxCount: 1 }]),[ AuthorizationCheck ], RegisterCompetition);
-router.post('/register/competition', upload.fields([{ name: 'supportingDocuments', maxCount: 1 }]),[ AuthorizationCheck, ValidateAccess ], RegisterCompetitonPeserta);
-router.get('/findCompetition', [AuthorizationCheck, ValidateAccess], FindCompetition);
+router.post('/register/peserta', upload.fields([{ name: 'supportingDocuments', maxCount: 1 }]),[ AuthorizationCheck, ValidateAccess ], RegisterCompetitionPeserta);
+router.get('/findCompetition', [], FindCompetition);
 router.get('/findCompetitionRegistration', [], FindCompetitionRegistration);
 
 module.exports = router;

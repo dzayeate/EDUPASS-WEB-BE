@@ -1,7 +1,7 @@
 /**
  * @swagger
  *
- * /competition/register/competition:
+ * /competition/register/peserta:
  *   post:
  *     security:
  *      - bearerAuth: []
@@ -18,7 +18,7 @@
  *                 type: string
  *                 format: uuid
  *                 description: ID of the competition
- *                 example: 23ff82e9-23a0-49b2-b927-6e21d72d81bb
+ *                 example: 5119a240-ed9b-4d5e-ad7b-78866da06fa7
  *               domicile:
  *                 type: string
  *                 description: Domicile of the user
@@ -37,7 +37,7 @@
  *               teamSize:
  *                 type: integer
  *                 description: Size of the team if isTeam is true
- *                 example: 2
+ *                 example: 1
  *               teamMembers:
  *                 type: array
  *                 description: List of team members if isTeam is true
@@ -49,8 +49,8 @@
  *                       format: uuid
  *                       description: ID of the team member
  *                 example:
- *                   - userId: 4dcda2eb-6ec0-43cc-9537-cb45a8ff9b6e
- *                   - userId: 57ededa2-f937-43cc-b83c-7d01d80ded44
+ *                   - userId: 8e2cd5c0-24f6-4805-83fa-03a7884c4e4d
+ *                   - userId: 50143581-e2c0-4f11-a4ab-8bc5ffa54ed9
  *     responses:
  *       201:
  *         description: Registration successful

@@ -36,7 +36,7 @@ const RegisterCompetition = async (req, res) => {
     }
 }
 
-const RegisterCompetitonPeserta = async (req, res) => {
+const RegisterCompetitionPeserta = async (req, res) => {
     try {
         const { body, files } = req;
         const user = res.locals.user;
@@ -54,6 +54,7 @@ const RegisterCompetitonPeserta = async (req, res) => {
             body.teamSize = Number(body.teamSize);
         }
 
+        // Handle teamMembers correctly
         if (body.teamMembers && typeof body.teamMembers === 'string') {
             try {
                 const parsedTeamMembers = JSON.parse(body.teamMembers);
@@ -68,21 +69,25 @@ const RegisterCompetitonPeserta = async (req, res) => {
                 });
             }
         } else if (body.teamMembers === '') {
-            body.teamMembers = [];
+            body.teamMembers = []; // Ensure it's an empty array if not provided
         }
 
         const result = await registerCompetitionPeserta(user.id, body, files);
+
+        // Include teamMembers in the response
+        result.data.teamMembers = body.teamMembers;
+
         res.status(StatusCodes.CREATED).json(
             new BaseResponse({
                 status: StatusCodes.CREATED,
                 message: 'Berhasil mendaftarkan lomba',
-                data: result.data
+                data: result.data // Ensure teamMembers is included in result.data if processed correctly
             })
         );
     } catch (error) {
         const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
         res.status(status).json(
-            new BaseError({
+            new BaseResponse({
                 status: status,
                 message: error.message || 'Internal Server Error',
                 error: error.stack
@@ -130,7 +135,7 @@ const FindCompetitionRegistration = async (req, res) => {
 
 module.exports = {
     RegisterCompetition,
-    RegisterCompetitonPeserta,
+    RegisterCompetitionPeserta,
     FindCompetition,
     FindCompetitionRegistration
 }

@@ -1,4 +1,4 @@
-const { CompetitionRegistration } = require("../../models");
+const { CompetitionRegistration, CompetitionTeam, User, sequelize } = require("../../models");
 const constant = require("../../utils/constant");
 const { Op } = require('sequelize');
 
@@ -10,19 +10,21 @@ const FindCompetitionRegistrations = async (body) => {
   const { count: total, rows: data } = await CompetitionRegistration.findAndCountAll({
     offset,
     limit: length,
-    // include: [
-    //   {
-    //     model: Competition,
-    //     as: 'competition',
-    //     attributes: ['id', 'name'],
-    //   },
-    //   {
-    //     model: CompetitionTeam,
-    //     as: 'teamMembers',
-    //     attributes: ['id', 'userId'],
-    //   }
-    // ],
     where: generateWhereClause(body),
+    include: [
+      {
+        model: CompetitionTeam,
+        as: 'teamMembers',
+        attributes: ['id', 'userId'],
+        include: [
+          {
+            model: User, // Assuming User model is imported
+            as: 'member',
+            attributes: ['id', 'email'] // Add other attributes you want to include
+          }
+        ]
+      }
+    ]
   });
 
   return {

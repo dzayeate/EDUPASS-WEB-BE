@@ -22,7 +22,7 @@ module.exports = [
     allowed_role: [ROLE.EO]
   },
   {
-    path: '/competition/register/competition',
+    path: '/competition/register/peserta',
     method: 'POST',
     allowed_role: [ROLE.Umum]
   },
