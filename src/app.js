@@ -44,7 +44,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
-    message: 'SELAMAT DATANG DI API GDSC UNPAS',
+    message: 'SELAMAT DATANG DI API GDSC UNPAS GANTI',
   });
 });
 

@@ -6,7 +6,11 @@ COPY package*.json ./
 
 COPY .env* ./
 
-RUN npm install
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "Development" ]; \
+    then npm install; \
+    else npm install --only=production; \
+    fi
 
 COPY . .
 
