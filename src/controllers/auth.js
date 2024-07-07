@@ -2,6 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const BaseResponse = require('../schemas/responses/BaseResponse');
 const Register = require('../services/auth/register');
 const Login = require('../services/auth/login');
+const Logout = require('../services/auth/logout');
 
 const RegisterUser = async (req, res) => {
   try {
@@ -49,7 +50,22 @@ const LoginUser = async (req, res) => {
   }
 }
 
+const LogoutUser = async (req, res) => {
+  try {
+    await Logout(req, res);
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(
+      new BaseResponse({
+        status: status,
+        message: error.message
+      })
+    );
+  }
+};
+
 module.exports = {
   RegisterUser,
   LoginUser,
+  LogoutUser
 }

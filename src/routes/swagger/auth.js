@@ -25,10 +25,6 @@
  *                              description: confirm password user 
  *                              type: string
  *                              example: test123
- *                          roleName:
- *                              description: name of the role to be assigned to the user
- *                              type: string 
- *                              example: "Siswa"
  *                          firstName:
  *                              description: your first name
  *                              type: string 
@@ -111,4 +107,16 @@
  *          500:
  *              description: Some server error
  *
+ * /auth/logout:
+ *   post:
+ *      security:
+ *       - bearerAuth: []
+ *      summary: change password for user
+ *      tags: [Auth]
+ *      responses:
+ *          200:
+ *              description: login token
+ *
+ *          500:
+ *              description: Some server error
  */

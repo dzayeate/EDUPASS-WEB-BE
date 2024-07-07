@@ -5,6 +5,10 @@ const FindUsers = require('../services/user/findUser');
 const ChangePassword = require('../services/user/change-password');
 const forgotPass = require('../services/user/forgot-password');
 const resetPassword = require('../services/user/reset-password');
+const updateBiodata = require('../services/user/update-biodate');
+const DeleteUser = require('../services/user/delete-user');
+const ChangeRole = require('../services/user/change-role');
+
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -76,9 +80,68 @@ const ResetPassword = async (req, res) => {
   }
 }
 
+const UpdateBiodateUser = async(req, res) => {
+  try {
+    const { id } = req.query;
+    await updateBiodata(id, req.body, req.files);
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'Biodata berhasil diubah'
+    }));
+  } catch (error) {
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(new BaseResponse({
+      status: status,
+      message: error.message
+    }));
+  }
+}
+
+const DeleteUsers = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    
+    const result = await DeleteUser(userId);
+
+    res.status(StatusCodes.OK).json(
+      new BaseResponse({
+        status: StatusCodes.OK,
+        message: result.message,
+      })
+    );
+  } catch (error) {
+    console.error(`Error in DeleteUsers controller: ${error.message}`);
+    const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+    res.status(status).json(new BaseResponse({
+      status: status,
+      message: error.message
+    }));
+  }
+};
+
+const ChangeRoleUser = async (req, res) => {
+    try {
+        const user = await ChangeRole(req.body);
+        res.status(StatusCodes.OK).json(new BaseResponse({
+            status: StatusCodes.OK,
+            message: 'Role berhasil diubah',
+            data: user
+        }));
+    } catch (error) {
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+            res.status(status).json(new BaseResponse({
+            status: status,
+            message: error.message
+        }));
+    }
+}
+
 module.exports = {
   GetAllUsers,
   ChangePasswordUser,
   ForgotPassword,
   ResetPassword,
+  UpdateBiodateUser,
+  DeleteUsers,
+  ChangeRoleUser
 }

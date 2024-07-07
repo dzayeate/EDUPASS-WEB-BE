@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      CompetitionId: {
+      competitionId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -17,11 +17,11 @@ module.exports = {
           key: 'id'
         }
       },
-      MentorId: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'Mentors',
+          model: 'Users',
           key: 'id'
         }
       },
@@ -36,7 +36,7 @@ module.exports = {
     });
 
     await queryInterface.addConstraint('CompetitionMentors', {
-      fields: ['CompetitionId', 'MentorId'],
+      fields: ['CompetitionId', 'UserId'],
       type: 'unique',
       name: 'unique_competition_mentor'
     });
@@ -54,11 +54,11 @@ module.exports = {
     });
 
     await queryInterface.addConstraint('CompetitionMentors', {
-      fields: ['MentorId'],
+      fields: ['UserId'],
       type: 'foreign key',
       name: 'fk_competition_mentor_mentor',
       references: {
-        table: 'Mentors',
+        table: 'Users',
         field: 'id'
       },
       onUpdate: 'CASCADE',

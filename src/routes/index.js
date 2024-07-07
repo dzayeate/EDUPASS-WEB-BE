@@ -4,6 +4,7 @@ const router = express.Router();
 const AuthRouter = require('./auth');
 const UserRouter = require('./user');
 const fileRouter = require('./file');
+const CompetitionRouter = require('./competition');
 
 router.get('/', (req, res) => {
   res.json({
@@ -14,6 +15,6 @@ router.get('/', (req, res) => {
 router.use('/auth', AuthRouter);
 router.use('/user', UserRouter);
 router.use('/file', fileRouter);
-
+router.use('/competition', CompetitionRouter);
 
 module.exports = router;

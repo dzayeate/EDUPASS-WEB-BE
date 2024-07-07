@@ -32,6 +32,7 @@ const isValidUser = async (id) => {
   return isUserExists.dataValues;
 };
 
+
 module.exports = {
   isValidUserLogin,
   isValidUser,

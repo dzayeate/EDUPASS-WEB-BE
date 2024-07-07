@@ -34,6 +34,8 @@ const Register = async (body, files) => {
     pupils
   } = validateBody.value;
 
+  const validBirthDate = birthDate ? new Date(birthDate) : null;
+
   if (password !== confirmPassword) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
@@ -55,22 +57,6 @@ const Register = async (body, files) => {
       });
     }
 
-    const isPupilsExists = await User.findOne({
-      include: [{
-        model: Biodate,
-        as: "biodate"
-      }],
-      where: { "$biodate.pupils$": pupils },
-      transaction,
-    });
-    
-    if (isPupilsExists) {
-      throw new BaseError({
-        status: StatusCodes.BAD_REQUEST,
-        message: "Informasi sudah terdaftar",
-      });
-    }
-
     const roleId = role.id;
 
     const imageFile = files && files['image'] ? files['image'][0] : null;
@@ -83,7 +69,7 @@ const Register = async (body, files) => {
       {
         firstName,
         lastName,
-        birthDate,
+        birthDate: validBirthDate,
         gender,
         phone,
         address,

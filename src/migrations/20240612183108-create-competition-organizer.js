@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      CompetitionId: {
+      competitionId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
@@ -19,11 +19,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      OrganizerId: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'Organizers',
+          model: 'Users',
           key: 'id'
         },
         onUpdate: 'CASCADE',
@@ -39,11 +39,11 @@ module.exports = {
       }
     });
 
-    await queryInterface.addConstraint('CompetitionOrganizers', {
-      fields: ['CompetitionId', 'OrganizerId'],
-      type: 'unique',
-      name: 'unique_competition_organizer'
-    });
+    // await queryInterface.addConstraint('CompetitionOrganizers', {
+    //   fields: ['CompetitionId', 'OrganizerId'],
+    //   type: 'unique',
+    //   name: 'unique_competition_organizer'
+    // });
   },
 
   async down(queryInterface, Sequelize) {

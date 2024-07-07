@@ -3,6 +3,7 @@ const access_list = require("../utils/access_list");
 const BaseResponse = require("../schemas/responses/BaseResponse");
 const BaseError = require("../schemas/responses/BaseError");
 const { Role } = require("../models");
+const { match } = require("path-to-regexp");
 
 const validateAccess = async (req, res, next) => {
   try {
@@ -38,7 +39,11 @@ const parseRequest = (req) => {
 
   const { originalUrl: path, method } = req;
   const parsedPath = String(path).split("?")[0];
-  const pathData = access_list.filter(value => value.path === parsedPath && value.method === method);
+
+  const pathData = access_list.filter(value => {
+    const matched = match(value.path, { decode: decodeURIComponent })(parsedPath);
+    return matched && value.method === method;
+  });
 
   if (pathData.length === 0) {
     throw new BaseError({
@@ -51,9 +56,9 @@ const parseRequest = (req) => {
 };
 
 const extractRoleNameFromRoleId = async (roleId) => {
-    const role = await Role.findByPk(roleId);
-    if (!role) return "Unknown";
-    return role.name;
-  };
+  const role = await Role.findByPk(roleId);
+  if (!role) return "Unknown";
+  return role.name;
+};
 
 module.exports = validateAccess;

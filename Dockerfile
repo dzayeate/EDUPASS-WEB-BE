@@ -7,10 +7,10 @@ COPY package*.json ./
 COPY .env* ./
 
 ARG NODE_ENV
-RUN if [ "$NODE_ENV" = "development" ]; \
-        then npm install; \
-        else npm install --only=production; \
-        fi
+RUN if [ "$NODE_ENV" = "Development" ]; \
+    then npm install; \
+    else npm install --only=production; \
+    fi
 
 COPY . .
 

@@ -6,18 +6,18 @@ module.exports = Joi.object({
   confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': 'Passwords do not match'
   }),
-  roleName: Joi.string().required(),
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  birthDate: Joi.date().required(),
-  gender: Joi.string().required(),
-  phone: Joi.string().required(),
-  address: Joi.string().required(),
-  province: Joi.string().required(),
-  regencies: Joi.string().required(),
-  image: Joi.string(),
-  institutionName: Joi.string(),
-  field: Joi.string(),
-  pupils: Joi.string(),
-  proof: Joi.string(),
-})
+  roleName: Joi.string().default('Umum'),
+  firstName: Joi.string().optional().allow(''),
+  lastName: Joi.string().optional().allow(''),
+  birthDate: Joi.alternatives().try(Joi.date().iso(), Joi.allow(null)), // Allow ISO date format or null
+  gender: Joi.string().optional().allow(''),
+  phone: Joi.string().optional().allow(''),
+  address: Joi.string().optional().allow(''),
+  province: Joi.string().optional().allow(''),
+  regencies: Joi.string().optional().allow(''),
+  image: Joi.string().optional().allow(''),
+  institutionName: Joi.string().optional().allow(''),
+  field: Joi.string().optional().allow(''),
+  pupils: Joi.string().optional().allow(''),
+  proof: Joi.string().optional().allow(''),
+});

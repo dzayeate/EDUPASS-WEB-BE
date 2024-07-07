@@ -12,7 +12,6 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       },
       description: {
         type: Sequelize.TEXT,
@@ -33,6 +32,9 @@ module.exports = {
       platform: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      banner: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

@@ -1,33 +1,32 @@
 'use strict';
+
+const { allow } = require('joi');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CompetitionBenefits', {
+    await queryInterface.createTable('CompetitionTeams', {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4
       },
-      CompetitionId: {
+      registrationId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'Competitions',
+          model: 'CompetitionRegistrations',
           key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        }
       },
-      BenefitId: {
+      userId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'Benefits',
+          model: 'Users',
           key: 'id'
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        }
       },
       createdAt: {
         allowNull: false,
@@ -38,14 +37,8 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
-
-    await queryInterface.addConstraint('CompetitionBenefits', {
-      fields: ['CompetitionId', 'BenefitId'],
-      type: 'unique',
-      name: 'unique_competition_benefit'
-    });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('CompetitionBenefits');
+    await queryInterface.dropTable('CompetitionTeams');
   }
 };
