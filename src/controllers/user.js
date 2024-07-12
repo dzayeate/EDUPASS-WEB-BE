@@ -9,10 +9,10 @@ const updateBiodata = require('../services/user/update-biodate');
 const DeleteUser = require('../services/user/delete-user');
 const ChangeRole = require('../services/user/change-role');
 
-
 const GetAllUsers = async (req, res) => {
   try {
-    const users = await FindUsers(req.query);
+    const body = { ...req.body, search: req.query.search || req.body.search };
+    const users = await FindUsers(body, req.query);
     res.status(StatusCodes.OK).json(new DataTable(users.data, users.total));
   } catch (error) {
     const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -23,7 +23,7 @@ const GetAllUsers = async (req, res) => {
           status: status,
           message: error.message
         })
-      )
+      );
   }
 }
 

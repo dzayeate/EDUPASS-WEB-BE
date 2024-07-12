@@ -1,25 +1,27 @@
 version: "3.8"
+
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: build-stage
+      args:
+        - NODE_ENV=${NODE_ENV}
     ports:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
-    environment:
-      DB_USERNAME: root
-      DB_PASSWORD: password
-      DB_DATABASE: edupass
-      DB_HOST: mysql
-      DB_PORT: 3306
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
     depends_on:
       - mysql
 
   mysql:
-    image: mysql
+    image: mysql:8.0
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - db:/var/lib/mysql
     ports:
