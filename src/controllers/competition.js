@@ -98,20 +98,19 @@ const RegisterCompetitionPeserta = async (req, res) => {
 
 const FindCompetition = async (req, res) => {
     try {
-      const users = await findCompetition(req.query);
-      res.status(StatusCodes.OK).json(new DataTable(users.data, users.total));
+        const body = { ...req.body, search: req.query.search || req.body.search };
+        const competition = await findCompetition(body, req.query);
+        res.status(StatusCodes.OK).json(new DataTable(competition.data, competition.total));
     } catch (error) {
-      const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-      res
-        .status(status)
-        .json(
-          new BaseResponse({
-            status: status,
-            message: error.message
-          })
-        )
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(status).json(
+            new BaseResponse({
+                status: status,
+                message: error.message
+            })
+        );
     }
-}
+};
 
 const FindCompetitionRegistration = async (req, res) => {
     try {

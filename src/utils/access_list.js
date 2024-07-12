@@ -24,6 +24,6 @@ module.exports = [
   {
     path: '/competition/register/peserta',
     method: 'POST',
-    allowed_role: [ROLE.Umum]
+    allowed_role: [ROLE.Siswa, ROLE.Mahasiswa, ROLE.Umum]
   },
 ]
