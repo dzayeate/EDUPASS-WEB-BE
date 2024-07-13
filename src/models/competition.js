@@ -8,16 +8,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Competition.hasMany(models.CompetitionOrganizer, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'organizer'
       });
       Competition.hasMany(models.CompetitionMentor, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'mentor'
       });
       Competition.hasMany(models.Sponsor, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'sponsor'
+      });
+      Competition.hasMany(models.ScheduleCompetition, {
+        foreignKey: 'competitionId',
+        as: 'schedule'
       });
 
     }

@@ -8,7 +8,7 @@ module.exports = Joi.object({
   location : Joi.string().required(),
   platform : Joi.string().required(),
   banner : Joi.string().optional().allow(''),
-  sponsors: Joi.string().email().optional().allow(''),
-  mentors : Joi.string().email().optional().allow(''),
+  sponsors: Joi.array().items(Joi.string().email()).optional(),
+  mentors: Joi.array().items(Joi.string().email()).optional(),
 
 })

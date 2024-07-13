@@ -6,6 +6,7 @@ const registerCompetition = require('../services/competition/register');
 const registerCompetitionPeserta = require('../services/competition/registerCompetitonPeserta');
 const findCompetition = require('../services/competition/findCompetition');
 const findCompetitionRegistration = require('../services/competition/findCompetitionRegistrations');
+const addScheduleCompetition = require('../services/competition/scheduleCompetition');
 
 const RegisterCompetition = async (req, res) => {
     try {
@@ -132,9 +133,32 @@ const FindCompetitionRegistration = async (req, res) => {
     }
 };
 
+const ScheduleCompetition = async (req, res) => {
+    try {
+        const { body } = req;
+        const result = await addScheduleCompetition(body);
+        res.status(StatusCodes.OK).json(
+            new BaseResponse({
+                status: StatusCodes.OK,
+                message: 'Berhasil melakukan penjadwalan lomba',
+                data: result
+            })
+        );
+    } catch (error) {
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(status).json(
+            new BaseResponse({
+                status: status,
+                message: error.message
+            })
+        );
+    }
+};
+
 module.exports = {
     RegisterCompetition,
     RegisterCompetitionPeserta,
     FindCompetition,
-    FindCompetitionRegistration
+    FindCompetitionRegistration,
+    ScheduleCompetition,
 }
