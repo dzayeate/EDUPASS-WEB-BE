@@ -19,7 +19,7 @@
  *      - in: query
  *        name: search
  *        required: false
- *        description: search with keyword user firstname
+ *        description: search with keyword user id, email, first name
  *     responses:
  *       200:
  *         description: A list of users
@@ -29,6 +29,23 @@
  *               type: array
  *       500:
  *         description: Internal Server Error
+ * 
+ * /user/reset-password/{token}:
+ *  get:
+ *      summary: get user data by token
+ *      tags: [Users]
+ *      parameters:
+ *         - in: path
+ *           name: token
+ *           required: true
+ *           description: token from email
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: User data and token to manipulate for change password
+ *
+ *          500:
+ *              description: Some server error
  * 
  */
 
@@ -100,26 +117,6 @@
  *
  *          500:
  *              description: Some server error
- * 
- * 
- * /user/reset-password/{token}:
- *  get:
- *      summary: get user data by token
- *      tags: [Users]
- *      parameters:
- *         - in: path
- *           name: token
- *           required: true
- *           description: token from email
- *           type: string
- *      responses:
- *          200:
- *              description: User data and token to manipulate for change password
- *
- *          500:
- *              description: Some server error
- * 
- * @swagger
  *
  * /user/update-biodate:
  *   put:
@@ -250,6 +247,5 @@
  *               type: array
  *       500:
  *         description: Internal Server Error
- * 
  * 
  */

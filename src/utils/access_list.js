@@ -26,4 +26,19 @@ module.exports = [
     method: 'POST',
     allowed_role: [ROLE.Siswa, ROLE.Mahasiswa, ROLE.Umum]
   },
+  {
+    path: '/competition/schedule',
+    method: 'POST',
+    allowed_role: [ROLE.EO]
+  },
+  {
+    path: '/competition/updateScheduleCompetition/:id',
+    method: 'PUT',
+    allowed_role: [ROLE.EO]
+  },
+  {
+    path: '/competition/deleteScheduleCompetition/:id',
+    method: 'DELETE',
+    allowed_role: [ROLE.EO]
+  }
 ]

@@ -59,14 +59,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       get() {
-        const imageUrl = this.getDataValue('supportingDocuments');
-        if (!imageUrl) {
+        const documentUrl = this.getDataValue('supportingDocuments');
+        if (!documentUrl) {
           return null;
         }
-        const imageUrlParts = imageUrl.split('/');
-        const filename = imageUrlParts[imageUrlParts.length - 1];
-        const baseUrl = process.env.BASE_URL;
-        return `${baseUrl}/file/download?fieldName=supportingDocuments&fileName=${filename}`;
+        return `${baseUrl}/file/download?fieldName=supportingDocuments&fileName=${documentUrl}`;
+      },
+      set(value) {
+        if (value && value.includes(baseUrl)) {
+          const url = new URL(value);
+          this.setDataValue('supportingDocuments', url.searchParams.get('fileName'));
+        } else {
+          this.setDataValue('supportingDocuments', value);
+        }
       }
     },
     isTeam: {

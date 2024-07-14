@@ -80,13 +80,15 @@ const ResetPassword = async (req, res) => {
   }
 }
 
-const UpdateBiodateUser = async(req, res) => {
+const UpdateBiodateUser = async (req, res) => {
   try {
     const { id } = req.query;
-    await updateBiodata(id, req.body, req.files);
+    const updatedBiodata = await updateBiodata(id, req.body, req.files);
+
     res.status(StatusCodes.OK).json(new BaseResponse({
       status: StatusCodes.OK,
-      message: 'Biodata berhasil diubah'
+      message: 'Biodata berhasil diubah',
+      data: updatedBiodata
     }));
   } catch (error) {
     const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
@@ -95,7 +97,7 @@ const UpdateBiodateUser = async(req, res) => {
       message: error.message
     }));
   }
-}
+};
 
 const DeleteUsers = async (req, res) => {
   try {

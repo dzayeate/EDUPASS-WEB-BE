@@ -5,7 +5,7 @@ const { StatusCodes } = require('http-status-codes');
 const BaseError = require('../../schemas/responses/BaseError');
 const { User, Competition, CompetitionRegistration, CompetitionTeam, sequelize } = require('../../models');
 
-const registerCompetitonPeserta = async (userId, body, files) => {
+const registerCompetitionPeserta = async (userId, body, files) => {
     const validateBody = schema.validate(body, { abortEarly: false });
 
     if (validateBody.error) {
@@ -46,16 +46,18 @@ const registerCompetitonPeserta = async (userId, body, files) => {
             });
         }
 
-        // Validate team members user IDs if it's a team competition
+        let validUsers = [];
+
+        // Validate team members emails if it's a team competition
         if (isTeam && teamMembers && teamMembers.length > 0) {
-            const userIds = teamMembers.map(member => member.userId);
-            const validUsers = await User.findAll({
+            const emails = teamMembers.map(member => member.email);
+            validUsers = await User.findAll({
                 where: {
-                    id: userIds
+                    email: emails
                 }
             });
 
-            if (validUsers.length !== userIds.length) {
+            if (validUsers.length !== emails.length) {
                 throw new BaseError({
                     status: StatusCodes.BAD_REQUEST,
                     message: "One or more team members do not exist",
@@ -77,10 +79,13 @@ const registerCompetitonPeserta = async (userId, body, files) => {
         }, { transaction });
 
         if (isTeam && teamMembers && teamMembers.length > 0) {
-            const teamData = teamMembers.map(member => ({
-                registrationId: competitionRegistration.id,
-                userId: member.userId
-            }));
+            const teamData = teamMembers.map(member => {
+                const validUser = validUsers.find(user => user.email === member.email);
+                return {
+                    registrationId: competitionRegistration.id,
+                    userId: validUser.id
+                };
+            });
             await CompetitionTeam.bulkCreate(teamData, { transaction });
         }
 
@@ -110,4 +115,4 @@ const registerCompetitonPeserta = async (userId, body, files) => {
     }
 };
 
-module.exports = registerCompetitonPeserta;
+module.exports = registerCompetitionPeserta;
