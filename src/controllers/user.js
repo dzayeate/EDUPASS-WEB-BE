@@ -112,7 +112,6 @@ const DeleteUsers = async (req, res) => {
       })
     );
   } catch (error) {
-    console.error(`Error in DeleteUsers controller: ${error.message}`);
     const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
     res.status(status).json(new BaseResponse({
       status: status,

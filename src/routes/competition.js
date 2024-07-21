@@ -16,10 +16,10 @@ const AuthorizationCheck = require('../middlewares/auth');
 const router = Router();
 
 router.get('/findCompetition', [], FindCompetition);
-router.get('/findCompetitionRegistration', [ AuthorizationCheck, ValidateAccess ], FindCompetitionRegistration);
+router.get('/findCompetitionRegistration', [], FindCompetitionRegistration);
 router.get('/findScheduleCompetition', [], FindScheduleCompetition);
 
-router.post('/register', upload.fields([{ name: 'image', maxCount: 1 }]),[ AuthorizationCheck ], RegisterCompetition);
+router.post('/registerCompetition', upload.fields([{ name: 'banner', maxCount: 1 }]),[ AuthorizationCheck ], RegisterCompetition);
 router.post('/register/peserta', upload.fields([{ name: 'supportingDocuments', maxCount: 1 }]),[ AuthorizationCheck, ValidateAccess ], RegisterCompetitionPeserta);
 router.post('/schedule', [ AuthorizationCheck, ValidateAccess ], ScheduleCompetition);
 

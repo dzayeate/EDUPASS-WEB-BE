@@ -17,8 +17,21 @@ const RegisterCompetition = async (req, res) => {
         if (!user) {
             throw new Error('User not found');
         }
-        const { body, file } = req;
-        const result = await registerCompetition(body, user, file);
+        const { body, files } = req;
+
+        if (typeof body.mentors === 'string') {
+            body.mentors = body.mentors.split(',');
+        } else if (!Array.isArray(body.mentors)) {
+            body.mentors = [body.mentors];
+        }
+
+        if (typeof body.sponsors === 'string') {
+            body.sponsors = body.sponsors.split(',');
+        } else if (!Array.isArray(body.sponsors)) {
+            body.sponsors = [body.sponsors];
+        }
+
+        const result = await registerCompetition(body, user, files);
         res.status(StatusCodes.CREATED).json(
             new BaseResponse({
                 status: StatusCodes.CREATED,
@@ -28,10 +41,9 @@ const RegisterCompetition = async (req, res) => {
         );
         
     } catch (error) {
-        console.error("Error during registration:", error);
         const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
         res.status(status).json(
-            new BaseError({
+            new BaseResponse({
                 status: status,
                 message: error.message || 'Internal Server Error',
                 error: error.stack
@@ -39,7 +51,6 @@ const RegisterCompetition = async (req, res) => {
         );
     }
 }
-
 const RegisterCompetitionPeserta = async (req, res) => {
     try {
         const { body, files } = req;
@@ -59,19 +70,11 @@ const RegisterCompetitionPeserta = async (req, res) => {
         }
 
         if (body.teamMembers && typeof body.teamMembers === 'string') {
-            try {
-                body.teamMembers = JSON.parse(body.teamMembers);
-                if (!Array.isArray(body.teamMembers)) {
-                    throw new Error('teamMembers must be an array');
-                }
-            } catch (error) {
-                throw new BaseError({
-                    status: StatusCodes.BAD_REQUEST,
-                    message: 'Invalid JSON format for teamMembers or teamMembers is not an array',
-                });
-            }
+            body.teamMembers = body.teamMembers.split(',').map(email => ({ email: email.trim() }));
         } else if (body.teamMembers === '') {
             body.teamMembers = [];
+        } else if (!Array.isArray(body.teamMembers)) {
+            body.teamMembers = [{ email: body.teamMembers }];
         }
 
         const result = await registerCompetitionPeserta(user.id, body, files);

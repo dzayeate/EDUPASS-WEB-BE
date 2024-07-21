@@ -21,6 +21,10 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false
       },
+      category: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       time: {
         type: Sequelize.TIME,
         allowNull: false
@@ -35,6 +39,10 @@ module.exports = {
       },
       banner: {
         type: Sequelize.STRING,
+      },
+      description: {
+        type: Sequelize.TEXT,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

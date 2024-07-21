@@ -3,8 +3,10 @@ const schema = require("../../schemas/validations/competition/register");
 const { StatusCodes } = require("http-status-codes");
 const BaseError = require("../../schemas/responses/BaseError");
 const { Op } = require("sequelize");
+const fs = require("fs");
+const path = require("path");
 
-const RegisterCompetition = async (body, user, file) => {
+const RegisterCompetition = async (body, user, files) => {
     const { error, value } = schema.validate(body);
     if (error) {
         throw new BaseError({
@@ -17,27 +19,35 @@ const RegisterCompetition = async (body, user, file) => {
         name,
         description,
         date,
+        category,
         time,
         location,
         platform,
-        banner,
         mentors = [],
         sponsors = [],
     } = value;
+
+    const bannerFile = files && files['banner'] ? files['banner'][0] : null;
 
     const transaction = await sequelize.transaction();
 
     try {
         const organizer = user;
 
+        let bannerFileName;
+        if (bannerFile) {
+            bannerFileName = bannerFile.filename;
+        }
+
         const competition = await Competition.create({
+            banner: bannerFileName,
             name,
             description,
             date,
+            category,
             time,
             location,
             platform,
-            banner,
         }, { transaction });
 
         await CompetitionOrganizer.create({
@@ -97,6 +107,14 @@ const RegisterCompetition = async (body, user, file) => {
         return competition;
     } catch (error) {
         await transaction.rollback();
+
+        if (bannerFile && bannerFile.filename) {
+            const bannerFilePath = path.join(__dirname, '../../../public/images/banners', bannerFile.filename);
+            if (fs.existsSync(bannerFilePath)) {
+                fs.unlinkSync(bannerFilePath);
+            }
+        }
+
         throw error;
     }
 };

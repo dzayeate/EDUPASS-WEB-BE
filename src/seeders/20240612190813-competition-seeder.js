@@ -24,18 +24,22 @@ module.exports = {
         name: 'Hackathon',
         description: 'Hackathon adalah kompetisi pemrograman yang biasanya berlangsung selama beberapa hari. Peserta akan diberikan tantangan untuk membuat aplikasi berdasarkan tema yang diberikan.',
         date: new Date(),
+        category: 'Web',
         time: '08:00:00',
         location: 'Online',
         platform: 'Zoom',
+        description: 'Hackathon adalah kompetisi pemrograman yang biasanya berlangsung selama beberapa hari. Peserta akan diberikan tantangan untuk membuat aplikasi berdasarkan tema yang diberikan.',
       },
       {
         id: uuidv4(),
         name: 'Webinar',
         description: 'Webinar adalah seminar yang diselenggarakan secara online. Peserta dapat mengikuti webinar melalui platform yang disediakan oleh penyelenggara.',
         date: new Date(),
+        category: 'Discuss',
         time: '08:00:00',
         location: 'Online',
         platform: 'Zoom',
+        description: 'Webinar adalah seminar yang diselenggarakan secara online. Peserta dapat mengikuti webinar melalui platform yang disediakan oleh penyelenggara.',
       },
     ]
 

@@ -21,7 +21,7 @@
  *      - in: query
  *        name: search
  *        required: false
- *        description: search with keyword competition name
+ *        description: search with keyword competition id ,name, description, date, category, time, location, platform
  *     responses:
  *       200:
  *         description: A list of users
@@ -50,7 +50,7 @@
  *      - in: query
  *        name: search
  *        required: false
- *        description: search with keyword competition domicile and phone
+ *        description: search with keyword competition id, domicile and phone
  *     responses:
  *       200:
  *         description: A list of users
@@ -79,7 +79,7 @@
  *      - in: query
  *        name: search
  *        required: false
- *        description: search with keyword competition name nad category
+ *        description: search with keyword competition name, category
  *     responses:
  *       200:
  *         description: A list of users
@@ -87,6 +87,71 @@
  *           application/json:
  *             schema:
  *               type: array
+ *       500:
+ *         description: Internal Server Error
+ *
+ * /competition/registerCompetition:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Register a new competition
+ *     tags: [Competitions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               banner:
+ *                 type: string
+ *                 format: binary
+ *                 description: The competition banner
+ *               name:
+ *                 type: string
+ *                 description: Competition name
+ *                 example: "Programming Challenge"
+ *               description:
+ *                 type: string
+ *                 description: Competition description
+ *                 example: "A challenge for coding enthusiasts."
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 description: Competition date
+ *                 example: 2024-07-20
+ *               category:
+ *                 type: string
+ *                 description: Competition category
+ *                 example: web
+ *               time:
+ *                 type: string
+ *                 format: time
+ *                 description: Competition time
+ *                 example: "14:00"
+ *               location:
+ *                 type: string
+ *                 description: Competition location
+ *                 example: "Jakarta"
+ *               platform:
+ *                 type: string
+ *                 description: Competition platform
+ *                 example: "Zoom"
+ *               mentors:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: List of mentor emails
+ *               sponsors:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 description: List of sponsor emails
+ *     responses:
+ *       201:
+ *         description: Competition registered successfully
+ *       400:
+ *         description: Bad Request
  *       500:
  *         description: Internal Server Error
  * 
@@ -144,8 +209,6 @@
  *       500:
  *         description: Internal Server Error
  * 
- * 
- * 
  * /competition/register/peserta:
  *   post:
  *     security:
@@ -163,7 +226,7 @@
  *                 type: string
  *                 format: uuid
  *                 description: ID of the competition
- *                 example: ce98d7a4-b9f3-4e1c-960d-d30f18b08a6d
+ *                 example: 82f8e418-e7c6-4249-b098-80517232afb8
  *               domicile:
  *                 type: string
  *                 description: Domicile of the user
@@ -182,24 +245,12 @@
  *               teamSize:
  *                 type: integer
  *                 description: Size of the team if isTeam is true
- *                 example: 1
+ *                 example: 2
  *               teamMembers:
  *                 type: array
- *                 description: List of team members if isTeam is true
  *                 items:
- *                   type: object
- *                   properties:
- *                     email:
- *                       type: string
- *                       format: email
- *                       description: Email of the team member
- *                 example:
- *                   - email: "test1@gmail.com"
- *                   - email: "test2@gmail.com"
- *                   - email: "test3@gmail.com"
- *                   - email: "test4@gmail.com"
- *                   - email: "test5@gmail.com"
- *                   - email: "test6@gmail.com"
+ *                   type: string
+ *                 description:  List of team members
  *     responses:
  *       201:
  *         description: Registration successful

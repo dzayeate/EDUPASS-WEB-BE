@@ -15,14 +15,7 @@ const FindCompetitionRegistrations = async (body, query) => {
       {
         model: CompetitionTeam,
         as: 'teamMembers',
-        attributes: ['id', 'userId'],
-        include: [
-          {
-            model: User,
-            as: 'member',
-            attributes: ['id', 'email']
-          }
-        ]
+        attributes: ['userId']
       }
     ],
     order: [

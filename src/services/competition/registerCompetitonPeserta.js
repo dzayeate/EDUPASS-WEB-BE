@@ -9,7 +9,6 @@ const registerCompetitionPeserta = async (userId, body, files) => {
     const validateBody = schema.validate(body, { abortEarly: false });
 
     if (validateBody.error) {
-        console.error("Validation error:", validateBody.error.details);
         throw new BaseError({
             status: StatusCodes.BAD_REQUEST,
             message: validateBody.error.details.map(detail => detail.message).join(', '),
@@ -25,12 +24,19 @@ const registerCompetitionPeserta = async (userId, body, files) => {
         teamMembers
     } = validateBody.value;
 
+
+    if (isTeam && teamMembers && teamMembers.length !== teamSize) {
+        throw new BaseError({
+            status: StatusCodes.BAD_REQUEST,
+            message: `Team size (${teamSize}) does not match the number of team members (${teamMembers.length})`,
+        });
+    }
+
     const transaction = await sequelize.transaction();
 
     try {
         const user = await User.findByPk(userId);
         if (!user) {
-            console.error("User not found");
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
                 message: "User tidak ditemukan",
@@ -39,7 +45,6 @@ const registerCompetitionPeserta = async (userId, body, files) => {
 
         const competition = await Competition.findByPk(competitionId);
         if (!competition) {
-            console.error("Competition not found");
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
                 message: "Kompetisi tidak ditemukan",
@@ -48,7 +53,6 @@ const registerCompetitionPeserta = async (userId, body, files) => {
 
         let validUsers = [];
 
-        // Validate team members emails if it's a team competition
         if (isTeam && teamMembers && teamMembers.length > 0) {
             const emails = teamMembers.map(member => member.email);
             validUsers = await User.findAll({
@@ -98,7 +102,6 @@ const registerCompetitionPeserta = async (userId, body, files) => {
         };
     } catch (error) {
         await transaction.rollback();
-        console.error("Error during competition registration:", error);
 
         if (files && files['supportingDocuments']) {
             const supportingDocumentFileName = files['supportingDocuments'][0].filename;
