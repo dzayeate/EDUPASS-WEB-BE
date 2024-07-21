@@ -11,7 +11,7 @@ module.exports = [
   {
     path: '/user/change-role',
     method: 'POST',
-    allowed_role: [ROLE.Admin]
+    allowed_role: [ROLE.Admin, ROLE.Siswa, ROLE.Mahasiswa]
   },
   {
     path: '/competition/registerCompetition',
