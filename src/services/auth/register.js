@@ -34,6 +34,14 @@ const Register = async (body, files) => {
     pupils
   } = validateBody.value;
 
+  const existingUser = await User.findOne({ where: { email } });
+  if (existingUser) {
+    throw new BaseError({
+      status: StatusCodes.BAD_REQUEST,
+      message: "Email sudah terdaftar",
+    });
+  }
+
   const validBirthDate = birthDate ? new Date(birthDate) : null;
 
   if (password !== confirmPassword) {
@@ -99,8 +107,6 @@ const Register = async (body, files) => {
     return user;
   } catch (error) {
     await transaction.rollback();
-    console.error('Transaction failed:', error); // Logging error
-  
     if (files) {
       const imageFile = files['image'] ? files['image'][0] : null;
       const proofFile = files['proof'] ? files['proof'][0] : null;

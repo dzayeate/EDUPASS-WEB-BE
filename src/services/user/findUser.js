@@ -1,7 +1,7 @@
 const { User, Role, Biodate } = require("../../models");
 const constant = require("../../utils/constant");
 const { Op } = require('sequelize');
-const { isUUID } = require('validator');
+const { isUUID, isEmail } = require('validator');
 
 const FindUsers = async (body, query) => {
   const page = parseInt(query.page) || 1;
@@ -48,10 +48,17 @@ const generateWhereClause = (body) => {
   if (search) {
     if (isUUID(search)) {
       userWhereClause.id = search;
-    } else {
-      biodateWhereClause.firstName = {
+    } else if (isEmail(search)) {
+      userWhereClause.email = {
         [Op.like]: `%${search}%`
       };
+    } else {
+      biodateWhereClause[Op.or] = [
+        { firstName: { [Op.like]: `%${search}%` } },
+        { lastName: { [Op.like]: `%${search}%` } },
+        { phone: { [Op.like]: `%${search}%` } },
+        { address: { [Op.like]: `%${search}%` } }
+      ];
     }
   }
 

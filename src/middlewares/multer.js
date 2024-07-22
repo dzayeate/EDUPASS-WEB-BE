@@ -5,10 +5,11 @@ const multer = require('multer');
 // Direktori untuk menyimpan file
 const userImageDir = path.join(__dirname, '../../public/images/users');
 const proofDir = path.join(__dirname, '../../public/images/proofs');
+const bannerDir = path.join(__dirname, '../../public/images/banners');
 const supportingDocumentDir = path.join(__dirname, '../../documents/competitions');
 
 // Membuat direktori jika belum ada
-[userImageDir, proofDir, supportingDocumentDir].forEach(dir => {
+[userImageDir, proofDir, supportingDocumentDir, bannerDir].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -23,6 +24,8 @@ const storage = multer.diskStorage({
             cb(null, proofDir);
         } else if (file.fieldname === 'supportingDocuments') {
             cb(null, supportingDocumentDir);
+        } else if (file.fieldname === 'banner') {
+            cb(null, bannerDir);
         } else {
             cb(new Error('Invalid field name'), false);
         }

@@ -5,11 +5,10 @@ const { StatusCodes } = require('http-status-codes');
 const BaseError = require('../../schemas/responses/BaseError');
 const { User, Competition, CompetitionRegistration, CompetitionTeam, sequelize } = require('../../models');
 
-const registerCompetitonPeserta = async (userId, body, files) => {
+const registerCompetitionPeserta = async (userId, body, files) => {
     const validateBody = schema.validate(body, { abortEarly: false });
 
     if (validateBody.error) {
-        console.error("Validation error:", validateBody.error.details);
         throw new BaseError({
             status: StatusCodes.BAD_REQUEST,
             message: validateBody.error.details.map(detail => detail.message).join(', '),
@@ -25,12 +24,19 @@ const registerCompetitonPeserta = async (userId, body, files) => {
         teamMembers
     } = validateBody.value;
 
+
+    if (isTeam && teamMembers && teamMembers.length !== teamSize) {
+        throw new BaseError({
+            status: StatusCodes.BAD_REQUEST,
+            message: `Team size (${teamSize}) does not match the number of team members (${teamMembers.length})`,
+        });
+    }
+
     const transaction = await sequelize.transaction();
 
     try {
         const user = await User.findByPk(userId);
         if (!user) {
-            console.error("User not found");
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
                 message: "User tidak ditemukan",
@@ -39,23 +45,23 @@ const registerCompetitonPeserta = async (userId, body, files) => {
 
         const competition = await Competition.findByPk(competitionId);
         if (!competition) {
-            console.error("Competition not found");
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
                 message: "Kompetisi tidak ditemukan",
             });
         }
 
-        // Validate team members user IDs if it's a team competition
+        let validUsers = [];
+
         if (isTeam && teamMembers && teamMembers.length > 0) {
-            const userIds = teamMembers.map(member => member.userId);
-            const validUsers = await User.findAll({
+            const emails = teamMembers.map(member => member.email);
+            validUsers = await User.findAll({
                 where: {
-                    id: userIds
+                    email: emails
                 }
             });
 
-            if (validUsers.length !== userIds.length) {
+            if (validUsers.length !== emails.length) {
                 throw new BaseError({
                     status: StatusCodes.BAD_REQUEST,
                     message: "One or more team members do not exist",
@@ -77,10 +83,13 @@ const registerCompetitonPeserta = async (userId, body, files) => {
         }, { transaction });
 
         if (isTeam && teamMembers && teamMembers.length > 0) {
-            const teamData = teamMembers.map(member => ({
-                registrationId: competitionRegistration.id,
-                userId: member.userId
-            }));
+            const teamData = teamMembers.map(member => {
+                const validUser = validUsers.find(user => user.email === member.email);
+                return {
+                    registrationId: competitionRegistration.id,
+                    userId: validUser.id
+                };
+            });
             await CompetitionTeam.bulkCreate(teamData, { transaction });
         }
 
@@ -93,7 +102,6 @@ const registerCompetitonPeserta = async (userId, body, files) => {
         };
     } catch (error) {
         await transaction.rollback();
-        console.error("Error during competition registration:", error);
 
         if (files && files['supportingDocuments']) {
             const supportingDocumentFileName = files['supportingDocuments'][0].filename;
@@ -110,4 +118,4 @@ const registerCompetitonPeserta = async (userId, body, files) => {
     }
 };
 
-module.exports = registerCompetitonPeserta;
+module.exports = registerCompetitionPeserta;

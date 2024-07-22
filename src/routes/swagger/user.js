@@ -19,7 +19,7 @@
  *      - in: query
  *        name: search
  *        required: false
- *        description: search with keyword user firstname
+ *        description: search with keyword user id, email, first name
  *     responses:
  *       200:
  *         description: A list of users
@@ -29,6 +29,23 @@
  *               type: array
  *       500:
  *         description: Internal Server Error
+ * 
+ * /user/reset-password/{token}:
+ *  get:
+ *      summary: get user data by token
+ *      tags: [Users]
+ *      parameters:
+ *         - in: path
+ *           name: token
+ *           required: true
+ *           description: token from email
+ *           type: string
+ *      responses:
+ *          200:
+ *              description: User data and token to manipulate for change password
+ *
+ *          500:
+ *              description: Some server error
  * 
  */
 
@@ -100,33 +117,43 @@
  *
  *          500:
  *              description: Some server error
- * 
- * 
- * /user/reset-password/{token}:
- *  get:
- *      summary: get user data by token
- *      tags: [Users]
- *      parameters:
- *         - in: path
- *           name: token
- *           required: true
- *           description: token from email
- *           type: string
- *      responses:
- *          200:
- *              description: User data and token to manipulate for change password
  *
- *          500:
- *              description: Some server error
+ * /user/change-role:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Get all users
+ *     tags: [Users]
+ *     requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          userId:
+ *                              description: change role
+ *                              type: string 
+ *                              example: "1234-5678"
+ *                          roleName:
+ *                              description: change role
+ *                              type: string 
+ *                              example: "Eo"
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
  * 
- * @swagger
- *
  * /user/update-biodate:
  *   put:
  *     security:
  *       - bearerAuth: []
  *     summary: update biodate
- *     tags: [User]
+ *     tags: [Users]
  *     parameters:
  *          - in: query
  *            name: id
@@ -203,7 +230,7 @@
  *     security:
  *       - bearerAuth: []
  *     summary: Delete user by ID
- *     tags: [User]
+ *     tags: [Users]
  *     parameters:
  *       - in: path
  *         name: userId
@@ -219,37 +246,5 @@
  *         description: User not found
  *       500:
  *         description: Internal Server Error
- * 
- * 
- * /user/change-role:
- *   post:
- *     security:
- *       - bearerAuth: []
- *     summary: Get all users
- *     tags: [Users]
- *     requestBody:
- *          content:
- *              application/json:
- *                  schema:
- *                      type: object
- *                      properties:
- *                          userId:
- *                              description: change role
- *                              type: string 
- *                              example: "1234-5678"
- *                          roleName:
- *                              description: change role
- *                              type: string 
- *                              example: "Eo"
- *     responses:
- *       200:
- *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *       500:
- *         description: Internal Server Error
- * 
  * 
  */

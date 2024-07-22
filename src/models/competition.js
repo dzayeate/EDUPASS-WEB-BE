@@ -1,5 +1,8 @@
 'use strict';
+
 const { allow } = require('joi');
+const baseUrl = process.env.BASE_URL;
+
 const {
   Model
 } = require('sequelize');
@@ -8,16 +11,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Competition.hasMany(models.CompetitionOrganizer, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'organizer'
       });
       Competition.hasMany(models.CompetitionMentor, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'mentor'
       });
       Competition.hasMany(models.Sponsor, {
-        foreignKey: 'CompetitionId',
+        foreignKey: 'competitionId',
         as: 'sponsor'
+      });
+      Competition.hasMany(models.ScheduleCompetition, {
+        foreignKey: 'competitionId',
+        as: 'schedule'
       });
 
     }
@@ -41,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: false
     },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     time: {
       type: DataTypes.TIME,
       allowNull: false
@@ -55,16 +66,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     banner: {
       type: DataTypes.STRING,
+      allowNull: true,
       get() {
-        const banner = this.getDataValue('banner');
-        if (!banner) {
+        const bannerUrl = this.getDataValue('banner');
+        if (!bannerUrl) {
           return null;
         }
-        const baseUrl = process.env.BASE_URL;
-        const imageUrlParts = this.getDataValue('banner').split('/');
-        const filename = imageUrlParts[imageUrlParts.length - 1];
-        return `${baseUrl}/file/download?url=${image}&filename=${filename}`;
+        return `${baseUrl}/file/download?fieldName=banner&fileName=${bannerUrl}`;
+      },
+      set(value) {
+        if( value && value.includes(baseUrl)) {
+          const url = new URL(value);
+          this.setDataValue('banner', url.searchParams.get('fileName'));
+        } else {
+          this.setDataValue('banner', value);
+        }
       }
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false
     },
   }, {
     sequelize,

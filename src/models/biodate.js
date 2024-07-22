@@ -2,9 +2,8 @@
 
 const baseUrl = process.env.BASE_URL;
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Biodate extends Model {
     static associate(models) {
@@ -15,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Biodate.init({
     id: {
       type: DataTypes.UUID,
@@ -61,10 +61,15 @@ module.exports = (sequelize, DataTypes) => {
         if (!imageUrl) {
           return null;
         }
-        const imageUrlParts = imageUrl.split('/');
-        const filename = imageUrlParts[imageUrlParts.length - 1];
-        const baseUrl = process.env.BASE_URL;
-        return `${baseUrl}/file/download?fieldName=image&fileName=${filename}`;
+        return `${baseUrl}/file/download?fieldName=image&fileName=${imageUrl}`;
+      },
+      set(value) {
+        if (value && value.includes(baseUrl)) {
+          const url = new URL(value);
+          this.setDataValue('image', url.searchParams.get('fileName'));
+        } else {
+          this.setDataValue('image', value);
+        }
       }
     },
     institutionName: {
@@ -87,14 +92,21 @@ module.exports = (sequelize, DataTypes) => {
         if (!proof) {
           return null;
         }
-        const imageUrlParts = this.getDataValue('proof').split('/');
-        const filename = imageUrlParts[imageUrlParts.length - 1];
-        return `${baseUrl}/file/download?fieldName=proof&fileName=${filename}`;
+        return `${baseUrl}/file/download?fieldName=proof&fileName=${proof}`;
+      },
+      set(value) {
+        if (value && value.includes(baseUrl)) {
+          const url = new URL(value);
+          this.setDataValue('proof', url.searchParams.get('fileName'));
+        } else {
+          this.setDataValue('proof', value);
+        }
       }
     },
   }, {
     sequelize,
     modelName: 'Biodate',
   });
+
   return Biodate;
 };
