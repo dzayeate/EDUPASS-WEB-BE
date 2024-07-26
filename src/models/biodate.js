@@ -61,7 +61,10 @@ module.exports = (sequelize, DataTypes) => {
         if (!imageUrl) {
           return null;
         }
-        return `${baseUrl}/file/download?fieldName=image&fileName=${imageUrl}`;
+        return {
+          downloadUrl: `${baseUrl}/file/download?fieldName=image&fileName=${imageUrl}`,
+          previewUrl: `${baseUrl}/file/preview?fieldName=image&fileName=${imageUrl}`
+        };
       },
       set(value) {
         if (value && value.includes(baseUrl)) {
