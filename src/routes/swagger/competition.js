@@ -54,10 +54,6 @@
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
  * 
@@ -83,13 +79,34 @@
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
- *
+ * 
+ * /competition/findSubmission:
+ *   get:
+ *     summary: Get submission competiton
+ *     tags: [Competitions]
+ *     parameters:
+ *      - in: query
+ *        name: page
+ *        required: false
+ *        description: The page of list
+ *        example: 1
+ *      - in: query
+ *        name: length
+ *        required: false
+ *        description: The length of list
+ *        example: 10
+ *      - in: query
+ *        name: search
+ *        required: false
+ *        description: search with keyword competition id, url
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *       500:
+ *         description: Internal Server Error
+ * 
  * /competition/registerCompetition:
  *   post:
  *     security:
@@ -258,6 +275,36 @@
  *         description: Bad Request
  *       404:
  *         description: User or Competition not found
+ *       500:
+ *         description: Internal Server Error
+ *
+ * /competition/submission:
+ *  post:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: submission competition
+ *     tags: [Competitions]
+ *     requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          registrationId:
+ *                              description: registrationId
+ *                              type: string 
+ *                              example: "1234-5678-1023"
+ *                          url:
+ *                              description: url submission
+ *                              type: string 
+ *                              example: "http://localhost:3000/"
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
  *       500:
  *         description: Internal Server Error
  * 

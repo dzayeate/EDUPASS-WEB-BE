@@ -1,22 +1,18 @@
-const { Competition, CompetitionMentor, CompetitionOrganizer, User, Sponsor } = require("../../models");
-const { at } = require("../../utils/access_list");
-const constant = require("../../utils/constant");
+const { Competition, CompetitionMentor, CompetitionOrganizer, CompetitionRegistration, User, Sponsor, sequelize } = require("../../models");
 const { Op } = require('sequelize');
 const { isUUID } = require('validator');
+const constant = require("../../utils/constant");
 
 const FindCompetition = async (body, query) => {
   const page = parseInt(query.page) || 1;
-  const length = parseInt(query.length) || constant.PAGE_SIZE; 
-
+  const length = parseInt(query.length) || constant.PAGE_SIZE;
   const offset = (page - 1) * length;
 
-  const { count: total, rows: data } = await Competition.findAndCountAll({
+  const competitions = await Competition.findAll({
     offset,
     limit: length,
     where: generateWhereClause(body),
-    order: [
-      ['createdAt', 'DESC']
-    ],
+    order: [['createdAt', 'DESC']],
     include: [
       {
         model: CompetitionMentor,
@@ -27,13 +23,32 @@ const FindCompetition = async (body, query) => {
         model: Sponsor,
         as: 'sponsor',
         attributes: ['userId']
+      },
+      {
+        model: CompetitionRegistration,
+        as: 'registrations',
+        attributes: []
       }
-    ]
+    ],
+    attributes: {
+      include: [
+        [
+          sequelize.fn('COUNT', sequelize.col('registrations.id')),
+          'registrationCount'
+        ]
+      ]
+    },
+    group: ['Competition.id', 'mentor.id', 'sponsor.id'],
+    subQuery: false
+  });
+
+  const total = await Competition.count({
+    where: generateWhereClause(body)
   });
 
   return {
     total,
-    data
+    data: competitions
   };
 };
 
@@ -86,3 +101,4 @@ const generateWhereClause = (body) => {
 };
 
 module.exports = FindCompetition;
+

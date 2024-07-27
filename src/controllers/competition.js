@@ -10,6 +10,8 @@ const addScheduleCompetition = require('../services/competition/scheduleCompetit
 const findScheduleCompetitions = require('../services/competition/findScheduleCompetition');
 const updateScheduleCompetition = require('../services/competition/updateScheduleCompetiton');
 const deleteScheduleCompetition = require('../services/competition/deleteScheduleCompetition');
+const submissionCompetitive = require('../services/competition/submissionCompetiton');
+const findSubmission = require('../services/competition/findSubmission');
 
 const RegisterCompetition = async (req, res) => {
     try {
@@ -51,6 +53,7 @@ const RegisterCompetition = async (req, res) => {
         );
     }
 }
+
 const RegisterCompetitionPeserta = async (req, res) => {
     try {
         const { body, files } = req;
@@ -219,6 +222,44 @@ const DeleteScheduleCompetition = async (req, res) => {
     }
 }
 
+const SubmissionCompetition = async (req, res) => {
+    try {
+        const { body } = req;
+        const result = await submissionCompetitive(body);
+        res.status(StatusCodes.CREATED).json(
+            new BaseResponse({
+                status: StatusCodes.CREATED,
+                message: 'Berhasil mengirimkan submission',
+                data: result
+            })
+        );
+    } catch (error) {
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(status).json(
+            new BaseResponse({
+                status: status,
+                message: error.message
+            })
+        );
+    }
+}
+
+const FindSubmission = async (req, res) => {
+    try {
+        const body = { ...req.body, search: req.query.search || req.body.search };
+        const submission = await findSubmission(body, req.query);
+        res.status(StatusCodes.OK).json(new DataTable(submission.data, submission.total));
+    } catch (error) {
+        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
+        res.status(status).json(
+            new BaseResponse({
+                status: status,
+                message: error.message || 'Internal Server Error'
+            })
+        );
+    }
+};
+
 module.exports = {
     RegisterCompetition,
     RegisterCompetitionPeserta,
@@ -227,5 +268,7 @@ module.exports = {
     ScheduleCompetition,
     FindScheduleCompetition,
     UpdateScheduleCompetition,
-    DeleteScheduleCompetition
+    DeleteScheduleCompetition,
+    SubmissionCompetition,
+    FindSubmission
 }

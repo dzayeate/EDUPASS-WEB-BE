@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'competitionId',
         as: 'schedule'
       });
-
+      Competition.hasMany(models.CompetitionRegistration, {
+        foreignKey: 'competitionId',
+        as: 'registrations'
+      });
     }
   }
   Competition.init({

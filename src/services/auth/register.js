@@ -7,12 +7,17 @@ const fs = require("fs");
 const path = require("path");
 
 const Register = async (body, files) => {
+  // Isi roleName dengan 'Umum' jika kosong sebelum validasi
+  if (!body.roleName || body.roleName.trim() === '') {
+    body.roleName = 'Umum';
+  }
+
   const validateBody = schema.validate(body);
 
   if (validateBody.error) {
     throw new BaseError({
       status: StatusCodes.BAD_REQUEST,
-      message: validateBody.error,
+      message: validateBody.error.details[0].message,
     });
   }
 
@@ -56,16 +61,14 @@ const Register = async (body, files) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const role = await Role.getIdByName(roleName);
+    const roleId = await Role.getIdByName(roleName);
   
-    if (!role) {
+    if (!roleId) {
       throw new BaseError({
         status: StatusCodes.BAD_REQUEST,
         message: "Invalid role name",
       });
     }
-  
-    const roleId = role.id;
   
     const imageFile = files && files['image'] ? files['image'][0] : null;
     const proofFile = files && files['proof'] ? files['proof'][0] : null;

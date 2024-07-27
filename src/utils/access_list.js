@@ -11,7 +11,7 @@ module.exports = [
   {
     path: '/user/change-role',
     method: 'POST',
-    allowed_role: [ROLE.Admin, ROLE.Siswa, ROLE.Mahasiswa]
+    allowed_role: [ROLE.Admin]
   },
   {
     path: '/competition/registerCompetition',
@@ -21,12 +21,17 @@ module.exports = [
   {
     path: '/competition/register/peserta',
     method: 'POST',
-    allowed_role: [ROLE.Siswa, ROLE.Mahasiswa, ROLE.Umum]
+    allowed_role: [ROLE.Siswa, ROLE.Umum, ROLE.Mahasiswa]
   },
   {
     path: '/competition/schedule',
     method: 'POST',
     allowed_role: [ROLE.EO]
+  },
+  {
+    path: '/competition/submission',
+    method: 'POST',
+    allowed_role: [ROLE.Umum]
   },
   // PUT/PATCH
   {

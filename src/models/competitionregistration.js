@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'teamMembers',
         onDelete: 'CASCADE',
       });
+      CompetitionRegistration.hasMany(models.CompetitionSubmission, {
+        foreignKey: 'registrationId',
+        as: 'submissions'
+      });
     }
   }
 

@@ -16,11 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
-    static getIdByName(name) {
-      return this.findOne({
+    static async getIdByName(name) {
+      const role = await this.findOne({
         where: { name },
         attributes: ['id'],
       });
+      return role ? role.id : null;
     }
 
   }

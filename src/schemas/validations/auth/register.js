@@ -6,10 +6,10 @@ module.exports = Joi.object({
   confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({
     'any.only': 'Passwords do not match'
   }),
-  roleName: Joi.string().default('Umum'),
+  roleName: Joi.string().allow('').default('Umum'),
   firstName: Joi.string().optional().allow(''),
   lastName: Joi.string().optional().allow(''),
-  birthDate: Joi.alternatives().try(Joi.date().iso(), Joi.allow(null)), // Allow ISO date format or null
+  birthDate: Joi.alternatives().try(Joi.date().iso(), Joi.allow(null)),
   gender: Joi.string().optional().allow(''),
   phone: Joi.string().optional().allow(''),
   address: Joi.string().optional().allow(''),
