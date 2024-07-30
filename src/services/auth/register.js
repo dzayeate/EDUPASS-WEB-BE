@@ -7,7 +7,6 @@ const fs = require("fs");
 const path = require("path");
 
 const Register = async (body, files) => {
-  // Isi roleName dengan 'Umum' jika kosong sebelum validasi
   if (!body.roleName || body.roleName.trim() === '') {
     body.roleName = 'Umum';
   }
@@ -61,21 +60,22 @@ const Register = async (body, files) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const roleId = await Role.getIdByName(roleName);
-  
-    if (!roleId) {
+    const defaultRoleId = await Role.getIdByName('Umum'); // Default role is 'Umum'
+    const requestedRoleId = await Role.getIdByName(roleName);
+
+    if (!requestedRoleId) {
       throw new BaseError({
         status: StatusCodes.BAD_REQUEST,
         message: "Invalid role name",
       });
     }
-  
+
     const imageFile = files && files['image'] ? files['image'][0] : null;
     const proofFile = files && files['proof'] ? files['proof'][0] : null;
-  
+
     const imageFileName = imageFile ? imageFile.filename : null;
     const proofFileName = proofFile ? proofFile.filename : null;
-  
+
     const biodate = await Biodate.create(
       {
         firstName,
@@ -94,39 +94,41 @@ const Register = async (body, files) => {
       },
       { transaction }
     );
-  
+
     const user = await User.create(
       {
         email,
         password: hashedPassword,
-        roleId,
+        roleId: roleName === 'Umum' ? defaultRoleId : requestedRoleId,
         biodateId: biodate.id,
+        requestedRole: roleName !== 'Umum' ? roleName : null,
+        isVerified: roleName === 'Umum'
       },
       { transaction }
     );
-  
+
     await transaction.commit();
-  
+
     return user;
   } catch (error) {
     await transaction.rollback();
     if (files) {
       const imageFile = files['image'] ? files['image'][0] : null;
       const proofFile = files['proof'] ? files['proof'][0] : null;
-  
+
       if (imageFile && imageFile.filename) {
         const imageFilePath = path.join(__dirname, '../../../public/images/users', imageFile.filename);
         fs.unlinkSync(imageFilePath);
       }
-  
+
       if (proofFile && proofFile.filename) {
         const proofFilePath = path.join(__dirname, '../../../public/images/proofs', proofFile.filename);
         fs.unlinkSync(proofFilePath);
       }
     }
-  
+
     throw error;
   }
-}  
+}
 
 module.exports = Register;

@@ -25,6 +25,9 @@ module.exports = {
           key: 'id'
         }
       },
+      nameTeam: {
+        type: Sequelize.STRING
+      },
       domicile: {
         type: Sequelize.STRING
       },

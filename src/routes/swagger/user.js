@@ -79,18 +79,9 @@
  *      responses:
  *          200:
  *              description: login token
- *              content:
- *                  application/json:
- *                      schema:
- *                          allOf:
- *                              - $ref: '#/components/schemas/BaseResponse'
  *
  *          500:
  *              description: Some server error
- *              content:
- *                  application/json:
- *                      schema:
- *                          $ref: '#/components/schemas/BaseError'
  * 
  */
 
@@ -122,7 +113,30 @@
  *   post:
  *     security:
  *       - bearerAuth: []
- *     summary: Get all users
+ *     summary: Request to change role
+ *     tags: [Users]
+ *     requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          roleName:
+ *                              description: change role
+ *                              type: string 
+ *                              example: "Eo"
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *       500:
+ *         description: Internal Server Error
+ * 
+ * /user/verify-user:
+ *   post:
+ *     security:
+ *       - bearerAuth: []
+ *     summary: Verify user
+ *     description: Note This endpoint is restricted to users with the Admin role.
  *     tags: [Users]
  *     requestBody:
  *          content:
@@ -131,20 +145,15 @@
  *                      type: object
  *                      properties:
  *                          userId:
- *                              description: change role
+ *                              description: user id
  *                              type: string 
- *                              example: "1234-5678"
- *                          roleName:
- *                              description: change role
- *                              type: string 
- *                              example: "Eo"
+ *                              example: "27930a8d-4e29-4912-ba33-d28015cc0d24"
+ *                          isApproved:
+ *                              description: Approve user
+ *                              type: boolean
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
  * 
@@ -221,7 +230,6 @@
  *     responses:
  *       200:
  *         description: User baru berhasil dibuat
- *
  *       500:
  *         description: Internal Server Error
  * 
@@ -230,6 +238,7 @@
  *     security:
  *       - bearerAuth: []
  *     summary: Delete user by ID
+ *     description: This endpoint is restricted to users with the Admin role.
  *     tags: [Users]
  *     parameters:
  *       - in: path

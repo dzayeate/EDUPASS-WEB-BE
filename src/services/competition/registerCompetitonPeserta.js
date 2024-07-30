@@ -17,6 +17,7 @@ const registerCompetitionPeserta = async (userId, body, files) => {
 
     const {
         competitionId,
+        nameTeam,
         domicile,
         phoneNumber,
         isTeam,
@@ -75,6 +76,7 @@ const registerCompetitionPeserta = async (userId, body, files) => {
         const competitionRegistration = await CompetitionRegistration.create({
             userId,
             competitionId,
+            nameTeam,
             domicile,
             phoneNumber,
             supportingDocuments: supportingDocumentFileName,

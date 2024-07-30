@@ -8,6 +8,7 @@ const resetPassword = require('../services/user/reset-password');
 const updateBiodata = require('../services/user/update-biodate');
 const DeleteUser = require('../services/user/delete-user');
 const ChangeRole = require('../services/user/change-role');
+const verifyUser = require('../services/user/verifyUser');
 
 const GetAllUsers = async (req, res) => {
   try {
@@ -121,21 +122,45 @@ const DeleteUsers = async (req, res) => {
 };
 
 const ChangeRoleUser = async (req, res) => {
-    try {
-        const user = await ChangeRole(req.body);
-        res.status(StatusCodes.OK).json(new BaseResponse({
-            status: StatusCodes.OK,
-            message: 'Role berhasil diubah',
-            data: user
-        }));
-    } catch (error) {
-        const status = error.status || StatusCodes.INTERNAL_SERVER_ERROR;
-            res.status(status).json(new BaseResponse({
-            status: status,
-            message: error.message
-        }));
-    }
-}
+  try {
+      const user = res.locals.user;
+
+      if (!user) {
+          throw new BaseError({
+              status: StatusCodes.UNAUTHORIZED,
+              message: 'User is not authenticated',
+          });
+      }
+
+      const updatedUser = await ChangeRole(user.id, req.body);
+      res.status(StatusCodes.OK).json(new BaseResponse({
+          status: StatusCodes.OK,
+          message: 'Role berhasil diubah',
+          data: updatedUser
+      }));
+  } catch (error) {
+      res.status(error.status || StatusCodes.INTERNAL_SERVER_ERROR).json(new BaseResponse({
+          status: error.status || StatusCodes.INTERNAL_SERVER_ERROR,
+          message: error.message
+      }));
+  }
+};
+
+const VerifyUser = async (req, res) => {
+  try {
+    const verify = await verifyUser(req.body);
+    res.status(StatusCodes.OK).json(new BaseResponse({
+      status: StatusCodes.OK,
+      message: 'User berhasil diverifikasi',
+      data: verify
+    }));
+  } catch (error) {
+    res.status(error.status || StatusCodes.INTERNAL_SERVER_ERROR).json(new BaseResponse({
+      status: error.status || StatusCodes.INTERNAL_SERVER_ERROR,
+      message: error.message
+    }));
+  }
+};
 
 module.exports = {
   GetAllUsers,
@@ -144,5 +169,6 @@ module.exports = {
   ResetPassword,
   UpdateBiodateUser,
   DeleteUsers,
-  ChangeRoleUser
+  ChangeRoleUser,
+  VerifyUser
 }

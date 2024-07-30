@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
     },
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
     },
     name: {
       type: DataTypes.STRING,

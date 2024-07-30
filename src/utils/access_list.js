@@ -2,17 +2,7 @@ const ROLE = require("../schemas/enums/role");
 
 module.exports = [
   // GET
-  {
-    path: '/user/mahasiswa',
-    method: 'GET',
-    allowed_role: [ROLE.Siswa]
-  },
   // POST
-  {
-    path: '/user/change-role',
-    method: 'POST',
-    allowed_role: [ROLE.Admin]
-  },
   {
     path: '/competition/registerCompetition',
     method: 'POST',
@@ -21,7 +11,7 @@ module.exports = [
   {
     path: '/competition/register/peserta',
     method: 'POST',
-    allowed_role: [ROLE.Siswa, ROLE.Umum, ROLE.Mahasiswa]
+    allowed_role: [ROLE.Siswa, ROLE.Mahasiswa]
   },
   {
     path: '/competition/schedule',
@@ -31,7 +21,12 @@ module.exports = [
   {
     path: '/competition/submission',
     method: 'POST',
-    allowed_role: [ROLE.Umum]
+    allowed_role: [ROLE.Siswa, ROLE.Mahasiswa]
+  },
+  {
+    path: '/user/verify-user',
+    method: 'POST',
+    allowed_role: [ROLE.Admin]
   },
   // PUT/PATCH
   {

@@ -18,6 +18,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+        isVerified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
+      requestedRole: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       roleId: {
         type: Sequelize.UUID,
         allowNull: false,

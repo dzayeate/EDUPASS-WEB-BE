@@ -112,6 +112,7 @@
  *     security:
  *       - bearerAuth: []
  *     summary: Register a new competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -177,6 +178,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: Schedule a competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -230,7 +232,8 @@
  *   post:
  *     security:
  *      - bearerAuth: []
- *     summary: Register competition for mahasiswa, siswa, umum
+ *     summary: Register competition
+ *     description: This endpoint is restricted to users with the Siswa, Mahasiswa role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -244,6 +247,10 @@
  *                 format: uuid
  *                 description: ID of the competition
  *                 example: 82f8e418-e7c6-4249-b098-80517232afb8
+ *               nameTeam:
+ *                 type: string
+ *                 description: Domicile of the user
+ *                 example: Exsodus
  *               domicile:
  *                 type: string
  *                 description: Domicile of the user
@@ -283,6 +290,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: submission competition
+ *     description: This endpoint is restricted to users with the Siswa, Mahasiswa role.
  *     tags: [Competitions]
  *     requestBody:
  *          content:
@@ -313,6 +321,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: Update a schedule competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     parameters:
  *       - in: path
@@ -374,6 +383,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: Delete a schedule competition
+ *     description: Note This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     parameters:
  *       - in: path

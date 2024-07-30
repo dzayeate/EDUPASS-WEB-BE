@@ -14,7 +14,7 @@ const FindUsers = async (body, query) => {
   const { count: total, rows: data } = await User.findAndCountAll({
     offset,
     limit: length,
-    attributes: ['id', 'email'],
+    attributes: ['id', 'email', 'isVerified', 'requestedRole'],
     where: whereClause.userWhereClause,
     include: [
       {

@@ -2,6 +2,7 @@ const Joi = require('joi');
 
 module.exports = Joi.object({
   competitionId: Joi.string().uuid().required(),
+  nameTeam: Joi.string().allow('').optional(),
   domicile: Joi.string().required(),
   phoneNumber: Joi.string().required(),
   supportingDocuments: Joi.any().optional(),

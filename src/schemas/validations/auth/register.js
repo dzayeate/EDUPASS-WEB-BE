@@ -9,7 +9,7 @@ module.exports = Joi.object({
   roleName: Joi.string().allow('').default('Umum'),
   firstName: Joi.string().optional().allow(''),
   lastName: Joi.string().optional().allow(''),
-  birthDate: Joi.alternatives().try(Joi.date().iso(), Joi.allow(null)),
+  birthDate:Joi.date().iso().allow(''),
   gender: Joi.string().optional().allow(''),
   phone: Joi.string().optional().allow(''),
   address: Joi.string().optional().allow(''),

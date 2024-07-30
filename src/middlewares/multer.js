@@ -36,16 +36,25 @@ const storage = multer.diskStorage({
     }
 });
 
-// Filter untuk file gambar dan dokumen
 const fileFilter = (req, file, cb) => {
     if (file.fieldname === 'supportingDocuments') {
-        // Hanya memperbolehkan file PDF untuk supportingDocuments
         if (file.mimetype === 'application/pdf') {
             cb(null, true);
         } else {
             cb(new Error('File must be a PDF!'), false);
         }
-    } else if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+    } else if (file.fieldname === 'proof') {
+        if (file.mimetype === 'image/jpeg' || 
+            file.mimetype === 'image/png' || 
+            file.mimetype === 'image/jpg' ||
+            file.mimetype === 'application/pdf') {
+            cb(null, true);
+        } else {
+            cb(new Error('File must be an image (jpeg, png, jpg) or a PDF!'), false);
+        }
+    } else if (file.mimetype === 'image/jpeg' || 
+               file.mimetype === 'image/png' || 
+               file.mimetype === 'image/jpg') {
         cb(null, true);
     } else {
         cb(new Error('File must be an image!'), false);

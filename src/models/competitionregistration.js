@@ -51,6 +51,10 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
+    nameTeam: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     domicile: {
       type: DataTypes.STRING,
       allowNull: false

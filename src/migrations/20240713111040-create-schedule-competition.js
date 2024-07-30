@@ -10,7 +10,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4
       },
       date: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       name: {
         type: Sequelize.STRING
