@@ -34,7 +34,15 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Sponsor, {
         foreignKey: 'userId',
         as:'sponsor'
-    });
+      });
+      User.hasMany(models.CompetitionRegistration, {
+        foreignKey: 'userId',
+        as: 'registrations',
+      });
+      User.hasMany(models.CompetitionTeam, {
+        foreignKey: 'userId',
+        as: 'teamMembers',
+      });
     }
 
     static getBiodate() {
