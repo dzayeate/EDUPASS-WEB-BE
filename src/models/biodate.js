@@ -67,7 +67,9 @@ module.exports = (sequelize, DataTypes) => {
         };
       },
       set(value) {
-        if (value && value.includes(baseUrl)) {
+        if (typeof value === 'object' && value !== null) {
+          this.setDataValue('image', value.downloadUrl ? new URL(value.downloadUrl).searchParams.get('fileName') : null);
+        } else if (typeof value === 'string' && value.includes(baseUrl)) {
           const url = new URL(value);
           this.setDataValue('image', url.searchParams.get('fileName'));
         } else {
@@ -98,7 +100,9 @@ module.exports = (sequelize, DataTypes) => {
         return `${baseUrl}/file/download?fieldName=proof&fileName=${proof}`;
       },
       set(value) {
-        if (value && value.includes(baseUrl)) {
+        if (typeof value === 'object' && value !== null) {
+          this.setDataValue('proof', value.downloadUrl ? new URL(value.downloadUrl).searchParams.get('fileName') : null);
+        } else if (typeof value === 'string' && value.includes(baseUrl)) {
           const url = new URL(value);
           this.setDataValue('proof', url.searchParams.get('fileName'));
         } else {
