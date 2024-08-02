@@ -31,6 +31,7 @@ module.exports = {
       {
         id: uuidv4(),
         email: 'admin1@example.com',
+        isVerified: true,
         password: hashedPassword,
         roleId: role,
         biodateId: biodates[0].id,
@@ -41,6 +42,7 @@ module.exports = {
         id: uuidv4(),
         email: 'admin2@example.com',
         password: hashedPassword,
+        isVerified: true,
         roleId: role,
         biodateId: biodates[1].id,
         createdAt: new Date(),
@@ -50,6 +52,7 @@ module.exports = {
         id: uuidv4(),
         email: 'admin3@example.com',
         password: hashedPassword,
+        isVerified: true,
         roleId: role,
         biodateId: biodates[2].id,
         createdAt: new Date(),

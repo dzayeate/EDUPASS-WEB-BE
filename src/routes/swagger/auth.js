@@ -25,6 +25,10 @@
  *                              description: confirm password user 
  *                              type: string
  *                              example: test123
+ *                          roleName:
+ *                              description: confirm password user 
+ *                              type: string
+ *                              example: Admin
  *                          firstName:
  *                              description: your first name
  *                              type: string 

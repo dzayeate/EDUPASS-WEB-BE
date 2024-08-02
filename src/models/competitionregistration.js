@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         as: 'teamMembers',
         onDelete: 'CASCADE',
       });
+      CompetitionRegistration.hasMany(models.CompetitionSubmission, {
+        foreignKey: 'registrationId',
+        as: 'submissions'
+      });
     }
   }
 
@@ -46,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Competition',
         key: 'id'
       }
+    },
+    nameTeam: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     domicile: {
       type: DataTypes.STRING,

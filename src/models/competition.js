@@ -26,7 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'competitionId',
         as: 'schedule'
       });
-
+      Competition.hasMany(models.CompetitionRegistration, {
+        foreignKey: 'competitionId',
+        as: 'registrations'
+      });
     }
   }
   Competition.init({
@@ -72,7 +75,10 @@ module.exports = (sequelize, DataTypes) => {
         if (!bannerUrl) {
           return null;
         }
-        return `${baseUrl}/file/download?fieldName=banner&fileName=${bannerUrl}`;
+        return {
+          downloadUrl: `${baseUrl}/file/download?fieldName=banner&fileName=${bannerUrl}`,
+          previewUrl: `${baseUrl}/file/preview?fieldName=banner&fileName=${bannerUrl}`
+        };
       },
       set(value) {
         if( value && value.includes(baseUrl)) {

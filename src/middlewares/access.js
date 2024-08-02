@@ -7,6 +7,12 @@ const { match } = require("path-to-regexp");
 
 const validateAccess = async (req, res, next) => {
   try {
+    if (!res.locals.user || !res.locals.user.isVerified) {
+      throw new BaseError({
+        status: StatusCodes.FORBIDDEN,
+        message: 'User is not verified. Access denied.',
+      });
+    }
     const PathRule = parseRequest(req);
 
     if (PathRule.length < 1) {

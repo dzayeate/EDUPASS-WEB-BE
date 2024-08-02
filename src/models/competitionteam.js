@@ -42,14 +42,6 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    competitionId: {
-      type: DataTypes.UUID,
-      allowNull: false,
-      references: {
-        model: 'Competition',
-        key: 'id'
-      }
-    },
   }, {
     sequelize,
     modelName: 'CompetitionTeam',

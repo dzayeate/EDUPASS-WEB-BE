@@ -15,10 +15,8 @@ const authorizationCheck = async (req, res, next) => {
             });
         }
 
-        // Dapatkan token dari header
         const token = authorization.split(' ')[1];
 
-        // Periksa apakah token ada di blacklist
         if (isBlacklisted(token)) {
             throw new BaseError({
                 status: StatusCodes.UNAUTHORIZED,

@@ -54,10 +54,6 @@
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
  * 
@@ -83,18 +79,40 @@
  *     responses:
  *       200:
  *         description: A list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
  *       500:
  *         description: Internal Server Error
- *
+ * 
+ * /competition/findSubmission:
+ *   get:
+ *     summary: Get submission competiton
+ *     tags: [Competitions]
+ *     parameters:
+ *      - in: query
+ *        name: page
+ *        required: false
+ *        description: The page of list
+ *        example: 1
+ *      - in: query
+ *        name: length
+ *        required: false
+ *        description: The length of list
+ *        example: 10
+ *      - in: query
+ *        name: search
+ *        required: false
+ *        description: search with keyword competition id, url
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *       500:
+ *         description: Internal Server Error
+ * 
  * /competition/registerCompetition:
  *   post:
  *     security:
  *       - bearerAuth: []
  *     summary: Register a new competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -160,6 +178,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: Schedule a competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -213,7 +232,8 @@
  *   post:
  *     security:
  *      - bearerAuth: []
- *     summary: Register competition for mahasiswa, siswa, umum
+ *     summary: Register competition
+ *     description: This endpoint is restricted to users with the Siswa, Mahasiswa role.
  *     tags: [Competitions]
  *     requestBody:
  *       required: true
@@ -227,6 +247,10 @@
  *                 format: uuid
  *                 description: ID of the competition
  *                 example: 82f8e418-e7c6-4249-b098-80517232afb8
+ *               nameTeam:
+ *                 type: string
+ *                 description: Domicile of the user
+ *                 example: Exsodus
  *               domicile:
  *                 type: string
  *                 description: Domicile of the user
@@ -260,12 +284,44 @@
  *         description: User or Competition not found
  *       500:
  *         description: Internal Server Error
+ *
+ * /competition/submission:
+ *  post:
+ *     security:
+ *      - bearerAuth: []
+ *     summary: submission competition
+ *     description: This endpoint is restricted to users with the Siswa, Mahasiswa role.
+ *     tags: [Competitions]
+ *     requestBody:
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          registrationId:
+ *                              description: registrationId
+ *                              type: string 
+ *                              example: "1234-5678-1023"
+ *                          url:
+ *                              description: url submission
+ *                              type: string 
+ *                              example: "http://localhost:3000/"
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *       500:
+ *         description: Internal Server Error
  * 
  * /competition/updateScheduleCompetition/{id}:
  *   put:
  *     security:
  *      - bearerAuth: []
  *     summary: Update a schedule competition
+ *     description: This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     parameters:
  *       - in: path
@@ -327,6 +383,7 @@
  *     security:
  *      - bearerAuth: []
  *     summary: Delete a schedule competition
+ *     description: Note This endpoint is restricted to users with the EO role.
  *     tags: [Competitions]
  *     parameters:
  *       - in: path

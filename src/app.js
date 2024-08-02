@@ -17,9 +17,9 @@ const swaggerOption = {
   definition: {
     openapi: '3.1.0',
     info: {
-      title: 'API GDSC UNIVERSITAS PASUNDAN',
+      title: 'API EDUPASS',
       version: '1.0.0',
-      description: 'Description of API GDSC UNPAS',
+      description: 'Description of API EDUPASS',
     },
     server: [
       {
@@ -44,7 +44,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => {
   res.json({
-    message: 'SELAMAT DATANG DI API GDSC UNPAS',
+    message: 'SELAMAT DATANG DI API EDUPASS',
   });
 });
 

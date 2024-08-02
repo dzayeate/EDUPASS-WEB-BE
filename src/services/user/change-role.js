@@ -3,17 +3,17 @@ const schema = require('../../schemas/validations/user/change-role');
 const { StatusCodes } = require('http-status-codes');
 const BaseError = require('../../schemas/responses/BaseError');
 
-const ChangeRole = async(body) => {
-    const validateBody = schema.validate(body);
-    if(validateBody.error) {
+const ChangeRole = async (userId, body) => {
+    const { error, value } = schema.validate(body);
+    if (error) {
         throw new BaseError({
             status: StatusCodes.BAD_REQUEST,
-            message: validateBody.error.message,
+            message: error.message,
         });
     }
 
     try {
-        const user = await User.findByPk(body.userId);
+        const user = await User.findByPk(userId);
         if (!user) {
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
@@ -21,7 +21,7 @@ const ChangeRole = async(body) => {
             });
         }
 
-        const newRole = await Role.getIdByName(body.roleName);
+        const newRole = await Role.findOne({ where: { name: value.roleName } });
         if (!newRole) {
             throw new BaseError({
                 status: StatusCodes.NOT_FOUND,
@@ -30,15 +30,17 @@ const ChangeRole = async(body) => {
         }
 
         user.roleId = newRole.id;
+        user.isVerified = false;
+        user.requestedRole = value.roleName;
         await user.save();
+
         return user;
     } catch (error) {
-        const status = error?.status || StatusCodes.INTERNAL_SERVER_ERROR;
         throw new BaseError({
-            status: status,
-            message: error.message,
+            status: error.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.message || 'Internal Server Error',
         });
     }
-}
+};
 
 module.exports = ChangeRole;

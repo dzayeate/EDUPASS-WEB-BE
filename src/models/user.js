@@ -34,7 +34,15 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.Sponsor, {
         foreignKey: 'userId',
         as:'sponsor'
-    });
+      });
+      User.hasMany(models.CompetitionRegistration, {
+        foreignKey: 'userId',
+        as: 'registrations',
+      });
+      User.hasMany(models.CompetitionTeam, {
+        foreignKey: 'userId',
+        as: 'teamMembers',
+      });
     }
 
     static getBiodate() {
@@ -72,6 +80,14 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    requestedRole: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     roleId: {
       type: DataTypes.UUID,
