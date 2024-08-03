@@ -1,7 +1,7 @@
 const { StatusCodes } = require('http-status-codes');
 const schema = require('../../schemas/validations/user/update-biodate');
 const BaseError = require('../../schemas/responses/BaseError');
-const { Biodate, Province, sequelize } = require("../../models");
+const { Biodate, sequelize } = require("../../models");
 const fs = require("fs");
 const path = require("path");
 
@@ -14,7 +14,7 @@ const updateBiodata = async (id, body, files) => {
     });
   }
 
-  const { firstName, lastName, birthDate, gender, phone, address, provinceName, regencies, institutionName, field, pupils } = validateBody.value;
+  const { firstName, lastName, birthDate, gender, phone, address, province, regencies, institutionName, field, pupils } = validateBody.value;
   const validBirthDate = birthDate ? new Date(birthDate) : null;
 
   const transaction = await sequelize.transaction();
@@ -36,7 +36,7 @@ const updateBiodata = async (id, body, files) => {
     if (imageFile) {
       const imageFileName = imageFile.filename;
       if (biodate.image) {
-        const oldImageFileName = biodate.getDataValue('image');
+        const oldImageFileName = biodate.getDataValue('image'); // Pastikan hanya nama file yang diambil
         oldImageFilePath = path.join(__dirname, '../../../public/images/users', oldImageFileName);
         console.log(`Jalur file gambar lama: ${oldImageFilePath}`);
       }
@@ -46,19 +46,11 @@ const updateBiodata = async (id, body, files) => {
     if (proofFile) {
       const proofFileName = proofFile.filename;
       if (biodate.proof) {
-        const oldProofFileName = biodate.getDataValue('proof');
+        const oldProofFileName = biodate.getDataValue('proof'); // Pastikan hanya nama file yang diambil
         oldProofFilePath = path.join(__dirname, '../../../public/images/proofs', oldProofFileName);
         console.log(`Jalur file bukti lama: ${oldProofFilePath}`);
       }
       biodate.proof = proofFileName;
-    }
-
-    const provinceId = await Province.getIdByName(provinceName);
-    if (!provinceId) {
-      throw new BaseError({
-        status: StatusCodes.BAD_REQUEST,
-        message: "Invalid province name",
-      });
     }
 
     await biodate.update({
@@ -68,7 +60,7 @@ const updateBiodata = async (id, body, files) => {
       gender,
       phone,
       address,
-      provinceId,
+      province,
       regencies,
       institutionName,
       field,

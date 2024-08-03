@@ -53,7 +53,7 @@
  *                             description: your address
  *                             type: string
  *                             example: "Jalan Jendral Sudirman No 1"
- *                          provinceName:
+ *                          province:
  *                              description: province where your city is located
  *                              type: string 
  *                              example: "Jawa Barat"

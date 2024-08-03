@@ -1,4 +1,4 @@
-const { User, Role, sequelize, Biodate, Province  } = require("../../models");
+const { User, Role, sequelize, Biodate } = require("../../models");
 const schema = require("../../schemas/validations/auth/register");
 const { StatusCodes } = require("http-status-codes");
 const { encryptPassword } = require("../../utils/hash");
@@ -31,7 +31,7 @@ const Register = async (body, files) => {
     gender,
     phone,
     address,
-    provinceName,
+    province,
     regencies,
     institutionName,
     field,
@@ -60,7 +60,7 @@ const Register = async (body, files) => {
   const transaction = await sequelize.transaction();
 
   try {
-    const defaultRoleId = await Role.getIdByName('Umum'); // Default role is 'Umum'
+    const defaultRoleId = await Role.getIdByName('Umum');
     const requestedRoleId = await Role.getIdByName(roleName);
 
     if (!requestedRoleId) {
@@ -76,14 +76,6 @@ const Register = async (body, files) => {
     const imageFileName = imageFile ? imageFile.filename : null;
     const proofFileName = proofFile ? proofFile.filename : null;
 
-    const provinceId = await Province.getIdByName(province);
-    if (!provinceId) {
-      throw new BaseError({
-        status: StatusCodes.BAD_REQUEST,
-        message: "Invalid province name",
-      });
-    }
-
     const biodate = await Biodate.create(
       {
         firstName,
@@ -92,7 +84,7 @@ const Register = async (body, files) => {
         gender,
         phone,
         address,
-        provinceId,
+        province,
         regencies,
         image: imageFileName,
         institutionName,

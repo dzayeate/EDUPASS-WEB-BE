@@ -24,7 +24,7 @@ const FindUsers = async (body, query) => {
       {
         model: Biodate,
         as: 'biodate',
-        attributes: ['id', 'firstName', 'lastName', 'birthDate', 'gender', 'phone', 'address', 'province', 'regencies', 'image', 'institutionName', 'field', 'pupils'],
+        attributes: ['id', 'firstName', 'lastName', 'birthDate', 'gender', 'phone', 'address', 'province', 'regencies', 'image', 'institutionName', 'field', 'pupils', 'proof'],
         where: whereClause.biodateWhereClause
       },
       {

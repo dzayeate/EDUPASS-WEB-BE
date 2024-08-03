@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'biodateId',
         as: 'user',
       });
-      Biodate.belongsTo(models.Province, {
-        foreignKey: 'provinceId',
-        as: 'province',
-      });
     }
   }
 
@@ -49,15 +45,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    provinceId: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'Provinces',
-        key: 'id',
-      },
-      onUpdate: 'CASCADE',
-      onDelete: 'SET NULL',
+    province: {
+      type: DataTypes.STRING,
+      allowNull: true
     },
     regencies: {
       type: DataTypes.STRING,
