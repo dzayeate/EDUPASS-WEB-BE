@@ -13,7 +13,7 @@ module.exports = Joi.object({
   gender: Joi.string().optional().allow(''),
   phone: Joi.string().optional().allow(''),
   address: Joi.string().optional().allow(''),
-  province: Joi.string().optional().allow(''),
+  provinceName: Joi.string().optional().allow(''),
   regencies: Joi.string().optional().allow(''),
   image: Joi.string().optional().allow(''),
   institutionName: Joi.string().optional().allow(''),
