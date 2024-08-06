@@ -23,23 +23,29 @@ module.exports = {
         id: uuidv4(),
         name: 'Hackathon',
         description: 'Hackathon adalah kompetisi pemrograman yang biasanya berlangsung selama beberapa hari. Peserta akan diberikan tantangan untuk membuat aplikasi berdasarkan tema yang diberikan.',
-        date: new Date(),
+        startDate: new Date(),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 2)), // contoh: 2 hari dari startDate
         category: 'Web',
-        time: '08:00:00',
+        startTime: '08:00:00',
+        endTime: '18:00:00', // contoh: 10 jam dari startTime
         location: 'Online',
         platform: 'Zoom',
-        description: 'Hackathon adalah kompetisi pemrograman yang biasanya berlangsung selama beberapa hari. Peserta akan diberikan tantangan untuk membuat aplikasi berdasarkan tema yang diberikan.',
+        banner: null,
+        thumbnail: null
       },
       {
         id: uuidv4(),
         name: 'Webinar',
         description: 'Webinar adalah seminar yang diselenggarakan secara online. Peserta dapat mengikuti webinar melalui platform yang disediakan oleh penyelenggara.',
-        date: new Date(),
+        startDate: new Date(),
+        endDate: new Date(new Date().setDate(new Date().getDate() + 1)), // contoh: 1 hari dari startDate
         category: 'Discuss',
-        time: '08:00:00',
+        startTime: '08:00:00',
+        endTime: '12:00:00', // contoh: 4 jam dari startTime
         location: 'Online',
         platform: 'Zoom',
-        description: 'Webinar adalah seminar yang diselenggarakan secara online. Peserta dapat mengikuti webinar melalui platform yang disediakan oleh penyelenggara.',
+        banner: null,
+        thumbnail: null
       },
     ]
 
@@ -87,6 +93,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    
+
   }
 };

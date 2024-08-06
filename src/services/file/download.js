@@ -6,6 +6,7 @@ const directories = {
   'proof': path.join(__dirname, '../../../public/images/proofs'),
   'supportingDocuments': path.join(__dirname, '../../../documents/competitions'),
   'banner': path.join(__dirname, '../../../public/images/banners'),
+  'thumbnail': path.join(__dirname, '../../../public/images/thumbnails'),
 };
 
 const download = async (fieldName, fileName) => {

@@ -6,10 +6,11 @@ const multer = require('multer');
 const userImageDir = path.join(__dirname, '../../public/images/users');
 const proofDir = path.join(__dirname, '../../public/images/proofs');
 const bannerDir = path.join(__dirname, '../../public/images/banners');
+const thumbnailDir = path.join(__dirname, '../../public/images/thumbnails');
 const supportingDocumentDir = path.join(__dirname, '../../documents/competitions');
 
 // Membuat direktori jika belum ada
-[userImageDir, proofDir, supportingDocumentDir, bannerDir].forEach(dir => {
+[userImageDir, proofDir, supportingDocumentDir, bannerDir, thumbnailDir].forEach(dir => {
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
     }
@@ -26,6 +27,8 @@ const storage = multer.diskStorage({
             cb(null, supportingDocumentDir);
         } else if (file.fieldname === 'banner') {
             cb(null, bannerDir);
+        } else if (file.fieldname === 'thumbnail') {
+            cb(null, thumbnailDir); // Make sure this is correct
         } else {
             cb(new Error('Invalid field name'), false);
         }
@@ -44,16 +47,16 @@ const fileFilter = (req, file, cb) => {
             cb(new Error('File must be a PDF!'), false);
         }
     } else if (file.fieldname === 'proof') {
-        if (file.mimetype === 'image/jpeg' || 
-            file.mimetype === 'image/png' || 
+        if (file.mimetype === 'image/jpeg' ||
+            file.mimetype === 'image/png' ||
             file.mimetype === 'image/jpg' ||
             file.mimetype === 'application/pdf') {
             cb(null, true);
         } else {
             cb(new Error('File must be an image (jpeg, png, jpg) or a PDF!'), false);
         }
-    } else if (file.mimetype === 'image/jpeg' || 
-               file.mimetype === 'image/png' || 
+    } else if (file.mimetype === 'image/jpeg' ||
+               file.mimetype === 'image/png' ||
                file.mimetype === 'image/jpg') {
         cb(null, true);
     } else {

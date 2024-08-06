@@ -4,6 +4,7 @@ const path = require('path');
 const directories = {
   'image': path.join(__dirname, '../../../public/images/users'),
   'banner': path.join(__dirname, '../../../public/images/banners'),
+  'thumbnail': path.join(__dirname, '../../../public/images/thumbnails'),
 };
 
 const preview = async (fieldName, fileName) => {
@@ -20,7 +21,7 @@ const preview = async (fieldName, fileName) => {
     }
 
     const fileContent = fs.readFileSync(filePath);
-    
+
     return { fileContent, filePath };
   } catch (error) {
     throw error;

@@ -1,12 +1,10 @@
 'use strict';
 
-const { allow } = require('joi');
 const baseUrl = process.env.BASE_URL;
 
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
+const { Model, DataTypes } = require('sequelize');
+
+module.exports = (sequelize) => {
   class Competition extends Model {
     static associate(models) {
       // define association here
@@ -32,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
+
   Competition.init({
     id: {
       type: DataTypes.UUID,
@@ -47,7 +46,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    date: {
+    startDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false
+    },
+    endDate: {
       type: DataTypes.DATEONLY,
       allowNull: false
     },
@@ -55,7 +58,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    time: {
+    startTime: {
+      type: DataTypes.TIME,
+      allowNull: false
+    },
+    endTime: {
       type: DataTypes.TIME,
       allowNull: false
     },
@@ -81,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
         };
       },
       set(value) {
-        if( value && value.includes(baseUrl)) {
+        if (value && value.includes(baseUrl)) {
           const url = new URL(value);
           this.setDataValue('banner', url.searchParams.get('fileName'));
         } else {
@@ -89,13 +96,32 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: false
-    },
+    thumbnail: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      get() {
+        const thumbnailUrl = this.getDataValue('thumbnail');
+        if (!thumbnailUrl) {
+          return null;
+        }
+        return {
+          downloadUrl: `${baseUrl}/file/download?fieldName=thumbnail&fileName=${thumbnailUrl}`,
+          previewUrl: `${baseUrl}/file/preview?fieldName=thumbnail&fileName=${thumbnailUrl}`
+        };
+      },
+      set(value) {
+        if (value && value.includes(baseUrl)) {
+          const url = new URL(value);
+          this.setDataValue('thumbnail', url.searchParams.get('fileName'));
+        } else {
+          this.setDataValue('thumbnail', value);
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Competition',
   });
+
   return Competition;
 };

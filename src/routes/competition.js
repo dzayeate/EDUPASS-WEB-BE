@@ -22,7 +22,7 @@ router.get('/findCompetitionRegistration', [], FindCompetitionRegistration);
 router.get('/findScheduleCompetition', [], FindScheduleCompetition);
 router.get('/findSubmission', [], FindSubmission);
 
-router.post('/registerCompetition', upload.fields([{ name: 'banner', maxCount: 1 }]),[ AuthorizationCheck ], RegisterCompetition);
+router.post('/registerCompetition', upload.fields([{ name: 'banner', maxCount: 1 }, { name: 'thumbnail', maxCount: 1 }]),[ AuthorizationCheck ], RegisterCompetition);
 router.post('/register/peserta', upload.fields([{ name: 'supportingDocuments', maxCount: 1 }]),[ AuthorizationCheck, ValidateAccess ], RegisterCompetitionPeserta);
 router.post('/schedule', [ AuthorizationCheck, ValidateAccess ], ScheduleCompetition);
 router.post('/submission', [AuthorizationCheck, ValidateAccess], SubmissionCompetition);

@@ -56,7 +56,7 @@
  *         description: A list of users
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/findScheduleCompetition:
  *   get:
  *     summary: Get Schedule Competition
@@ -81,7 +81,7 @@
  *         description: A list of users
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/findSubmission:
  *   get:
  *     summary: Get submission competiton
@@ -106,7 +106,7 @@
  *         description: A list of users
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/registerCompetition:
  *   post:
  *     security:
@@ -125,6 +125,10 @@
  *                 type: string
  *                 format: binary
  *                 description: The competition banner
+ *               thumbnail:
+ *                 type: string
+ *                 format: binary
+ *                 description: The competition thumbnail
  *               name:
  *                 type: string
  *                 description: Competition name
@@ -133,20 +137,30 @@
  *                 type: string
  *                 description: Competition description
  *                 example: "A challenge for coding enthusiasts."
- *               date:
+ *               startDate:
  *                 type: string
  *                 format: date
- *                 description: Competition date
+ *                 description: Competition start date
  *                 example: 2024-07-20
+ *               endDate:
+ *                 type: string
+ *                 format: date
+ *                 description: Competition end date
+ *                 example: 2024-07-22
  *               category:
  *                 type: string
  *                 description: Competition category
  *                 example: web
- *               time:
+ *               startTime:
  *                 type: string
  *                 format: time
- *                 description: Competition time
- *                 example: "14:00"
+ *                 description: Competition start time
+ *                 example: "08:00"
+ *               endTime:
+ *                 type: string
+ *                 format: time
+ *                 description: Competition end time
+ *                 example: "18:00"
  *               location:
  *                 type: string
  *                 description: Competition location
@@ -172,7 +186,7 @@
  *         description: Bad Request
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/schedule:
  *   post:
  *     security:
@@ -227,7 +241,7 @@
  *         description: Competition not found
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/register/peserta:
  *   post:
  *     security:
@@ -300,11 +314,11 @@
  *                      properties:
  *                          registrationId:
  *                              description: registrationId
- *                              type: string 
+ *                              type: string
  *                              example: "1234-5678-1023"
  *                          url:
  *                              description: url submission
- *                              type: string 
+ *                              type: string
  *                              example: "http://localhost:3000/"
  *     responses:
  *       200:
@@ -315,7 +329,7 @@
  *               type: array
  *       500:
  *         description: Internal Server Error
- * 
+ *
  * /competition/updateScheduleCompetition/{id}:
  *   put:
  *     security:
@@ -377,7 +391,7 @@
  *         description: Competition or schedule competition not found
  *       500:
  *         description: Internal server error
- * 
+ *
  * /competition/deleteScheduleCompetition/{id}:
  *   delete:
  *     security:
@@ -400,6 +414,5 @@
  *         content:
  *       500:
  *         description: Internal server error
- * 
+ *
  */
-

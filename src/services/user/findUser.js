@@ -19,7 +19,8 @@ const FindUsers = async (body, query) => {
       {
         model: Role,
         as: 'role',
-        attributes: ['name']
+        attributes: ['name'],
+        where: whereClause.roleWhereClause // Apply role filter here
       },
       {
         model: Biodate,
@@ -33,7 +34,7 @@ const FindUsers = async (body, query) => {
         include: {
           model: Competition,
           as: 'competition',
-          attributes: ['id', 'name', 'date']
+          attributes: ['id', 'name', 'startDate', 'endDate']
         }
       },
       {
@@ -45,7 +46,7 @@ const FindUsers = async (body, query) => {
           include: {
             model: Competition,
             as: 'competition',
-            attributes: ['id', 'name', 'date']
+            attributes: ['id', 'name', 'startDate', 'endDate']
           }
         }
       }
@@ -60,7 +61,7 @@ const FindUsers = async (body, query) => {
     const teamRegistrations = user.teamMembers.map(member => member.registration) || [];
     const allRegistrations = [...registrations, ...teamRegistrations];
     const registeredCompetitions = allRegistrations.length;
-    const startedCompetitions = allRegistrations.filter(reg => new Date(reg.competition.date) <= new Date()).length;
+    const startedCompetitions = allRegistrations.filter(reg => new Date(reg.competition.startDate) <= new Date()).length;
     const notStartedCompetitions = registeredCompetitions - startedCompetitions;
 
     return {
@@ -75,8 +76,9 @@ const FindUsers = async (body, query) => {
       notStartedCompetitions,
       activities: allRegistrations.map(reg => ({
         competitionName: reg.competition.name,
-        competitionDate: reg.competition.date,
-        status: new Date(reg.competition.date) <= new Date() ? 'Started' : 'Not Started'
+        competitionStartDate: reg.competition.startDate,
+        competitionEndDate: reg.competition.endDate,
+        status: new Date(reg.competition.startDate) <= new Date() ? 'Started' : 'Not Started'
       }))
     };
   });
@@ -88,9 +90,10 @@ const FindUsers = async (body, query) => {
 };
 
 const generateWhereClause = (body) => {
-  const { search } = body;
+  const { search, role } = body;
   const userWhereClause = {};
   const biodateWhereClause = {};
+  const roleWhereClause = {};
 
   if (search) {
     if (isUUID(search)) {
@@ -109,7 +112,11 @@ const generateWhereClause = (body) => {
     }
   }
 
-  return { userWhereClause, biodateWhereClause };
+  if (role) {
+    roleWhereClause.name = role; // Exact match for role name
+  }
+
+  return { userWhereClause, biodateWhereClause, roleWhereClause };
 };
 
 module.exports = FindUsers;
